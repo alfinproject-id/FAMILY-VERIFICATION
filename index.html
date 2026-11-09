@@ -1264,7 +1264,92 @@
       .id-card-mark { width: 35px; height: 35px; font-size: 19px; }
       .id-card-mark small { font-size: 5px; }
     }
-</style>
+
+
+    /* REDESAIN KARTU ADMIN: NAVY, PUTIH, DAN AKSEN EMAS */
+    .id-card-wrapper { max-width: 760px !important; margin: 24px auto 30px !important; }
+    .id-card-container {
+      width: 100%; min-height: 0 !important; aspect-ratio: 1.586 / 1;
+      position: relative; isolation: isolate; overflow: hidden;
+      padding: 25px 28px !important; border-radius: 18px !important;
+      color: #f7f3e9 !important;
+      background: linear-gradient(112deg, #101d32 0%, #172b45 58%, #203b59 100%) !important;
+      border: 1px solid rgba(221,190,122,.8) !important;
+      box-shadow: 0 18px 42px rgba(0,0,0,.35), inset 0 0 0 4px rgba(255,255,255,.045) !important;
+    }
+    .id-card-container::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      width: auto; height: auto; opacity: 1;
+      background: radial-gradient(ellipse at 100% 0%, rgba(213,178,108,.2), transparent 42%),
+        linear-gradient(135deg, transparent 0 68%, rgba(255,255,255,.035) 68% 69%, transparent 69% 100%) !important;
+    }
+    /* Bingkai kedua dibuat sebagai elemen terpisah agar utuh di semua sisi. */
+    .id-card-container::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 1px solid rgba(220, 190, 130, .38);
+      border-radius: 11px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .id-card-container > * { position: relative; z-index: 2; }
+    .id-card-header { border-bottom: 1px solid rgba(220,190,130,.55) !important; padding-bottom: 12px !important; margin-bottom: 17px !important; }
+    .id-card-brand-icon { background: #d7b875 !important; color: #14243a !important; border-radius: 8px !important; box-shadow: none !important; }
+    .id-card-brand-title { color: #fff9eb !important; letter-spacing: 1.6px !important; }
+    .id-card-brand-sub { color: #c7b58d !important; letter-spacing: 1.4px !important; }
+    .id-chip { width: 39px !important; height: 29px !important; border-radius: 6px !important; background: linear-gradient(135deg,#f1dfae,#b58d4d) !important; border: 1px solid #f5e7c7 !important; box-shadow: none !important; }
+    .id-chip::after { background: rgba(40,35,25,.28) !important; }
+    .id-card-profile { display: flex !important; align-items: center !important; text-align: left !important; gap: 20px !important; margin: 0 0 17px !important; }
+    .id-avatar-outer { flex: 0 0 auto !important; margin: 0 !important; }
+    .id-avatar-outer::before { display: none !important; }
+    .id-card-avatar { width: 94px !important; height: 112px !important; border-radius: 9px !important; background: #d9e0e7 !important; color: #172b45 !important; border: 3px solid #e0c58d !important; box-shadow: 0 5px 16px rgba(0,0,0,.25) !important; font-size: 34px !important; }
+    .id-verified-seal { width: 23px !important; height: 23px !important; right: -7px !important; bottom: -6px !important; border: 2px solid #172b45 !important; background: #26966e !important; box-shadow: none !important; }
+    .id-card-overline { color: #c8b98f !important; font-size: 8px !important; letter-spacing: 1.5px !important; margin-bottom: 7px !important; }
+    .id-card-name { color: #fff !important; font-size: clamp(19px,3.5vw,28px) !important; line-height: 1.12 !important; margin: 0 0 8px !important; letter-spacing: .3px !important; }
+    .id-card-group-pill { display: inline-flex !important; padding: 5px 9px !important; border-radius: 4px !important; background: rgba(255,255,255,.09) !important; border: 1px solid rgba(226,204,158,.35) !important; color: #f1e7d1 !important; font-size: 9px !important; }
+    .id-card-group-pill span:first-child { color: #cbb783 !important; }
+    .id-card-mark { align-self: flex-start !important; flex: 0 0 auto !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 68px !important; height: 68px !important; border: 0 !important; border-radius: 0 !important; overflow: hidden !important; transform: none !important; }
+    .id-card-mark img { display: block !important; width: 100% !important; height: 100% !important; object-fit: contain !important; }
+    .id-card-details { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)) !important; gap: 8px 14px !important; padding: 10px 13px !important; margin-bottom: 10px !important; border-radius: 8px !important; background: rgba(5,13,25,.34) !important; border: 1px solid rgba(220,190,130,.22) !important; }
+    .id-detail-item { min-width: 0 !important; padding: 4px 2px !important; }
+    .id-detail-item label { color: #b7aa8e !important; font-size: 7px !important; letter-spacing: 1px !important; }
+    .id-detail-item val { color: #fff !important; font-size: 11px !important; margin-top: 3px !important; overflow-wrap: anywhere !important; }
+    .id-detail-item val.blue, #displayCode { color: #e5ca8d !important; }
+    .id-detail-item val.green { color: #75d7ad !important; }
+    .id-card-footer { border-top: 1px solid rgba(220,190,130,.38) !important; padding-top: 8px !important; }
+    .id-barcode { color: rgba(245,232,204,.72) !important; background: rgba(255,255,255,.04) !important; border: 1px dashed rgba(220,190,130,.3) !important; }
+    .id-status-badge { color: #9be2bf !important; background: rgba(25,128,88,.18) !important; border: 1px solid rgba(100,210,160,.38) !important; border-radius: 4px !important; padding: 5px 8px !important; font-size: 8px !important; }
+    @media (max-width: 480px) {
+      .id-card-container { padding: 14px 12px !important; border-radius: 12px !important; }
+      .id-card-header { padding-bottom: 7px !important; margin-bottom: 10px !important; }
+      .id-card-profile { gap: 10px !important; margin-bottom: 9px !important; }
+      .id-card-avatar { width: 60px !important; height: 74px !important; font-size: 24px !important; }
+      .id-card-name { font-size: clamp(14px,4vw,20px) !important; }
+      .id-card-mark { width: 44px !important; height: 44px !important; }
+      .id-card-details { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 4px 7px !important; padding: 6px 8px !important; margin-bottom: 6px !important; }
+      .id-card-footer { padding-top: 5px !important; }
+    }
+
+    /* Jarak panel informasi dari bingkai bawah kartu */
+    .id-card-container {
+      aspect-ratio: auto !important;
+      min-height: 0 !important;
+      padding-bottom: 30px !important;
+    }
+    .id-card-details {
+      margin-bottom: 24px !important;
+    }
+    .id-card-footer {
+      margin-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    @media (max-width: 480px) {
+      .id-card-container { padding-bottom: 24px !important; }
+      .id-card-details { margin-bottom: 18px !important; }
+    }
+
+  </style>
 </head>
 <body>
 
@@ -1396,9 +1481,13 @@
       <section class="page" id="page-create">
         <div class="panel">
           <h3>✦ Buat Kode Admin Baru</h3>
-          <p class="panel-desc">Generate kode akses unik untuk anggota yang telah disetujui menjadi admin.</p>
+          <p class="panel-desc">Tentukan sendiri kode akses untuk anggota yang telah disetujui menjadi admin.</p>
           
           <form id="createForm">
+            <label for="adminAccessCodeInput">KODE AKSES (BUAT MANUAL)</label>
+            <input id="adminAccessCodeInput" placeholder="Contoh: JAWA-ADMIN01" minlength="4" maxlength="24" pattern="[A-Za-z0-9-]+" title="Gunakan 4–24 karakter: huruf, angka, atau tanda hubung (-)." autocomplete="off" required>
+            <p class="panel-desc" style="margin:6px 0 14px;">4–24 karakter. Gunakan huruf, angka, atau tanda hubung (-). Kode tidak boleh sama dengan kode admin lain.</p>
+
             <div class="form-grid">
               <div>
                 <label for="adminName">NAMA ADMIN</label>
@@ -1410,6 +1499,9 @@
               </div>
             </div>
             
+            <label for="adminPhone">NOMOR WHATSAPP (OPSIONAL)</label>
+            <input id="adminPhone" type="tel" inputmode="tel" placeholder="Contoh: 6281234567890">
+
             <label for="adminPhotoUrl">URL FOTO ADMIN (OPSIONAL)</label>
             <input id="adminPhotoUrl" type="url" placeholder="https://contoh.com/foto-admin.jpg">
             <div class="photo-preview-wrap">
@@ -1529,7 +1621,9 @@
                 <span>UNIT / GRUP:</span> <span id="displayGroup">FRIENDS FAMILY</span>
               </div>
             </div>
-            <div class="id-card-mark">FV<br><small>ADMIN</small></div>
+            <div class="id-card-mark">
+              <img src="https://c.termai.cc/i118/qpo6.png" crossorigin="anonymous" alt="Logo FV Admin">
+            </div>
           </div>
 
           <div class="id-card-details">
@@ -1817,7 +1911,7 @@
       showApp("adminApp", isBack);
     }
 
-    // Download Admin Card as PNG
+    // Download Admin Card as PNG (layout ekspor dibuat konsisten di HP dan desktop)
     $("downloadCardBtn").onclick = async () => {
       const cardElement = $("adminCardToDownload");
       const downloadBtn = $("downloadCardBtn");
@@ -1826,22 +1920,59 @@
       downloadBtn.textContent = "⏳ Memproses Gambar...";
 
       try {
+        // Pastikan font dan foto selesai dimuat sebelum proses ekspor.
+        if (document.fonts?.ready) await document.fonts.ready;
+        const cardImages = Array.from(cardElement.querySelectorAll("img"));
+        await Promise.all(cardImages.map(async (img) => {
+          if (!img.complete) {
+            await new Promise(resolve => {
+              img.addEventListener("load", resolve, { once: true });
+              img.addEventListener("error", resolve, { once: true });
+            });
+          }
+          if (img.decode) await img.decode().catch(() => {});
+        }));
+
         const canvas = await html2canvas(cardElement, {
-          scale: 3, // Menggunakan resolusi tinggi
+          scale: 3,
           useCORS: true,
+          allowTaint: false,
           backgroundColor: null,
-          logging: false
+          logging: false,
+          // Paksa viewport desktop agar CSS mobile tidak mengubah komposisi kartu.
+          windowWidth: 1000,
+          windowHeight: 900,
+          onclone: (clonedDocument) => {
+            const clonedCard = clonedDocument.getElementById("adminCardToDownload");
+            const clonedWrapper = clonedCard?.closest(".id-card-wrapper");
+            if (clonedWrapper) {
+              clonedWrapper.style.width = "760px";
+              clonedWrapper.style.maxWidth = "760px";
+              clonedWrapper.style.margin = "0";
+            }
+            if (clonedCard) {
+              clonedCard.style.width = "760px";
+              clonedCard.style.maxWidth = "760px";
+              clonedCard.style.height = "480px";
+              clonedCard.style.minHeight = "480px";
+              clonedCard.style.aspectRatio = "auto";
+              clonedCard.style.padding = "28px";
+              clonedCard.style.borderRadius = "16px";
+              clonedCard.style.boxSizing = "border-box";
+            }
+          }
         });
 
         const image = canvas.toDataURL("image/png");
         const link = document.createElement("a");
-        const fileName = `KARTU-ADMIN-${(currentAdminData?.adminName || "ID").toUpperCase()}.png`;
-
-        link.download = fileName;
+        const safeName = (currentAdminData?.adminName || "ID").toUpperCase().replace(/[^A-Z0-9_-]/g, "-");
+        link.download = `KARTU-ADMIN-${safeName}.png`;
         link.href = image;
+        document.body.appendChild(link);
         link.click();
+        link.remove();
       } catch (err) {
-        alert("Gagal mengunduh kartu ID: " + err.message);
+        alert("Gagal mengunduh kartu ID: " + err.message + "\nPastikan foto admin menggunakan tautan gambar yang dapat diakses publik.");
       } finally {
         downloadBtn.disabled = false;
         downloadBtn.textContent = "📥 Unduh Kartu ID (PNG)";
@@ -2078,6 +2209,7 @@
     // Code Generator Form Handler
     $("createForm").onsubmit = async (e) => {
       e.preventDefault();
+      const code = $("adminAccessCodeInput").value.trim().toUpperCase();
       const adminName = $("adminName").value.trim();
       const groupName = $("groupName").value.trim();
       const role = $("adminRole").value;
@@ -2092,19 +2224,22 @@
         }
       }
 
-      if (!adminName || !groupName) return alert("Lengkapi semua data!");
+      if (!adminName || !groupName || !code) return alert("Lengkapi semua data!");
+      if (!/^[A-Z0-9-]{4,24}$/.test(code)) {
+        return alert("Kode akses harus 4–24 karakter dan hanya boleh berisi huruf, angka, atau tanda hubung (-).");
+      }
 
       const btn = $("createCodeBtn");
       btn.disabled = true;
       btn.textContent = "Membuat kode...";
 
       try {
-        let code, ref, exists = true;
-        while (exists) {
-          const r = () => (Math.random().toString(36).substring(2, 6)).toUpperCase();
-          code = "FAMILY-" + r() + "-" + r();
-          ref = doc(db, "adminCodes", code);
-          exists = (await getDoc(ref)).exists();
+        const ref = doc(db, "adminCodes", code);
+        const existingCode = await getDoc(ref);
+        if (existingCode.exists()) {
+          alert("Kode akses ini sudah digunakan. Silakan tentukan kode lain.");
+          $("adminAccessCodeInput").focus();
+          return;
         }
 
         await setDoc(ref, {
