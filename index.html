@@ -1331,24 +1331,6 @@
       .id-card-footer { padding-top: 5px !important; }
     }
 
-    /* Jarak panel informasi dari bingkai bawah kartu */
-    .id-card-container {
-      aspect-ratio: auto !important;
-      min-height: 0 !important;
-      padding-bottom: 30px !important;
-    }
-    .id-card-details {
-      margin-bottom: 24px !important;
-    }
-    .id-card-footer {
-      margin-top: 0 !important;
-      padding-bottom: 0 !important;
-    }
-    @media (max-width: 480px) {
-      .id-card-container { padding-bottom: 24px !important; }
-      .id-card-details { margin-bottom: 18px !important; }
-    }
-
   </style>
 </head>
 <body>
@@ -1911,7 +1893,7 @@
       showApp("adminApp", isBack);
     }
 
-    // Download Admin Card as PNG (layout ekspor dibuat konsisten di HP dan desktop)
+    // Download Admin Card as PNG (ikuti layout yang sedang tampil di perangkat)
     $("downloadCardBtn").onclick = async () => {
       const cardElement = $("adminCardToDownload");
       const downloadBtn = $("downloadCardBtn");
@@ -1920,7 +1902,7 @@
       downloadBtn.textContent = "⏳ Memproses Gambar...";
 
       try {
-        // Pastikan font dan foto selesai dimuat sebelum proses ekspor.
+        // Tunggu font dan seluruh gambar agar hasil ekspor tidak kehilangan aset.
         if (document.fonts?.ready) await document.fonts.ready;
         const cardImages = Array.from(cardElement.querySelectorAll("img"));
         await Promise.all(cardImages.map(async (img) => {
@@ -1933,34 +1915,18 @@
           if (img.decode) await img.decode().catch(() => {});
         }));
 
+        // Gunakan viewport asli. Dengan begitu media query HP/desktop tetap sama
+        // seperti tampilan website dan ukuran kartu tidak dipaksa menjadi 760x480.
         const canvas = await html2canvas(cardElement, {
           scale: 3,
           useCORS: true,
           allowTaint: false,
           backgroundColor: null,
           logging: false,
-          // Paksa viewport desktop agar CSS mobile tidak mengubah komposisi kartu.
-          windowWidth: 1000,
-          windowHeight: 900,
-          onclone: (clonedDocument) => {
-            const clonedCard = clonedDocument.getElementById("adminCardToDownload");
-            const clonedWrapper = clonedCard?.closest(".id-card-wrapper");
-            if (clonedWrapper) {
-              clonedWrapper.style.width = "760px";
-              clonedWrapper.style.maxWidth = "760px";
-              clonedWrapper.style.margin = "0";
-            }
-            if (clonedCard) {
-              clonedCard.style.width = "760px";
-              clonedCard.style.maxWidth = "760px";
-              clonedCard.style.height = "480px";
-              clonedCard.style.minHeight = "480px";
-              clonedCard.style.aspectRatio = "auto";
-              clonedCard.style.padding = "28px";
-              clonedCard.style.borderRadius = "16px";
-              clonedCard.style.boxSizing = "border-box";
-            }
-          }
+          windowWidth: window.innerWidth,
+          windowHeight: window.innerHeight,
+          scrollX: window.scrollX,
+          scrollY: window.scrollY
         });
 
         const image = canvas.toDataURL("image/png");
