@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAMILY VERIFICATION</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #10131c;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 430px;
+  margin: 50px auto;
+  background: #1b2030;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #aab1c5;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  border: 1px solid #394158;
+  background: #101522;
+  color: white;
+  border-radius: 8px;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  background: #5578ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: .85;
+}
+
+.danger {
+  background: #d94343;
+}
+
+.secondary {
+  background: #333d55;
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  background: #252c3e;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.card p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #c4cbe0;
+  overflow-wrap: anywhere;
+}
+
+.code {
+  color: #8ca5ff;
+  font-weight: bold;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  font-size: 13px;
+  color: #aab1c5;
+  margin-top: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HALAMAN LOGIN -->
+<div class="container" id="loginPage">
+
+  <h2>FAMILY VERIFICATION</h2>
+  <p class="subtitle">Sistem akses admin keluarga</p>
+
+  <div id="adminLogin">
+    <h3>Login Admin</h3>
+    <input id="accessCode" placeholder="Masukkan kode akses">
+    <button id="adminLoginBtn">Masuk sebagai Admin</button>
+  </div>
+
+  <p class="status" id="loginMessage"></p>
+
+  <hr style="border-color:#394158;margin:25px 0">
+
+  <div>
+    <h3>Login Owner</h3>
+    <input id="ownerEmail" type="email" placeholder="Email Gmail">
+    <input id="ownerPassword" type="password" placeholder="Password">
+    <button id="ownerLoginBtn">Login Owner</button>
+  </div>
+
+</div>
+
+
+<!-- HALAMAN OWNER -->
+<div class="container hidden" id="ownerPage">
+
+  <h2>OWNER DASHBOARD</h2>
+  <p class="subtitle">Panel pengelolaan akses admin</p>
+
+  <h3>Buat Kode Admin</h3>
+
+  <input id="adminName" placeholder="Nama Admin">
+  <input id="groupName" placeholder="Nama Grup">
+
+  <select id="adminRole">
+    <option value="ADMIN">ADMIN</option>
+    <option value="MODERATOR">MODERATOR</option>
+    <option value="FOUNDER">FOUNDER</option>
+  </select>
+
+  <button id="createCodeBtn">Buat Kode Akses</button>
+
+  <div id="newCodeResult"></div>
+
+  <hr style="border-color:#394158;margin:25px 0">
+
+  <h3>Daftar Kode Admin</h3>
+
+  <div id="codeList">
+    <p class="status">Memuat data...</p>
+  </div>
+
+  <button class="danger" id="ownerLogoutBtn">Logout Owner</button>
+
+</div>
+
+
+<!-- HALAMAN ADMIN -->
+<div class="container hidden" id="adminPage">
+
+  <h2>ADMIN DASHBOARD</h2>
+  <p class="subtitle">Selamat datang di FAMILY VERIFICATION</p>
+
+  <div class="card">
+    <p>Nama Admin</p>
+    <h3 id="displayName">-</h3>
+
+    <p>Nama Grup</p>
+    <h3 id="displayGroup">-</h3>
+
+    <p>Jabatan</p>
+    <h3 id="displayRole">-</h3>
+
+    <p>Status</p>
+    <h3 style="color:#42d69b">AKTIF</h3>
+  </div>
+
+  <button class="danger" id="adminLogoutBtn">Keluar</button>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  deleteDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// FIREBASE CONFIG
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAWEFNt0c9I_w8ndXJ1Z9vn6ytm2NrULgo",
+  authDomain: "family-verification-7a48f.firebaseapp.com",
+  projectId: "family-verification-7a48f",
+  storageBucket: "family-verification-7a48f.firebasestorage.app",
+  messagingSenderId: "673593985698",
+  appId: "1:673593985698:web:2c7eeced382d84c335a5fb"
+};
+
+
+// FIREBASE INITIALIZATION
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// OWNER UID
+
+const OWNER_UID = "UEajx5CBJhVGIy7WWfkMoxpGswv2";
+
+
+// ELEMENTS
+
+const loginPage = document.getElementById("loginPage");
+const ownerPage = document.getElementById("ownerPage");
+const adminPage = document.getElementById("adminPage");
+
+function showPage(page) {
+  loginPage.classList.add("hidden");
+  ownerPage.classList.add("hidden");
+  adminPage.classList.add("hidden");
+
+  page.classList.remove("hidden");
+}
+
+
+// ADMIN DASHBOARD
+
+function showAdmin(data) {
+  document.getElementById("displayName").textContent =
+    data.adminName || "-";
+
+  document.getElementById("displayGroup").textContent =
+    data.groupName || "-";
+
+  document.getElementById("displayRole").textContent =
+    data.role || "-";
+
+  showPage(adminPage);
+}
+
+
+// VERIFY ADMIN CODE
+
+async function verifyAdmin(code) {
+  const ref = doc(db, "adminCodes", code);
+  const snapshot = await getDoc(ref);
+
+  if (!snapshot.exists()) {
+    throw new Error("Kode akses tidak ditemukan!");
+  }
+
+  const data = snapshot.data();
+
+  if (data.active !== true) {
+    throw new Error("Kode akses sudah tidak aktif!");
+  }
+
+  return data;
+}
+
+
+// ADMIN LOGIN
+
+document.getElementById("adminLoginBtn")
+.addEventListener("click", async () => {
+
+  const code = document.getElementById("accessCode")
+    .value.trim();
+
+  const message = document.getElementById("loginMessage");
+
+  if (!code) {
+    message.textContent = "Masukkan kode akses terlebih dahulu!";
+    return;
+  }
+
+  message.textContent = "Memeriksa kode akses...";
+
+  try {
+    const data = await verifyAdmin(code);
+
+    localStorage.setItem("adminAccessCode", code);
+
+    showAdmin(data);
+
+  } catch (error) {
+    message.textContent = error.message;
+  }
+
+});
+
+
+// OWNER LOGIN
+
+document.getElementById("ownerLoginBtn")
+.addEventListener("click", async () => {
+
+  const email = document.getElementById("ownerEmail").value.trim();
+  const password = document.getElementById("ownerPassword").value;
+
+  const message = document.getElementById("loginMessage");
+
+  try {
+
+    const result = await signInWithEmailAndPassword(
+      auth, email, password
+    );
+
+    if (result.user.uid !== OWNER_UID) {
+      await signOut(auth);
+      throw new Error("Akun ini bukan akun Owner!");
+    }
+
+  } catch (error) {
+    message.textContent = error.message;
+  }
+
+});
+
+
+// LOAD OWNER CODES
+
+async function loadCodes() {
+
+  const list = document.getElementById("codeList");
+  list.textContent = "Memuat data...";
+
+  try {
+
+    const snapshot = await getDocs(collection(db, "adminCodes"));
+
+    list.replaceChildren();
+
+    if (snapshot.empty) {
+      list.textContent = "Belum ada kode admin.";
+      return;
+    }
+
+    snapshot.forEach((item) => {
+
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h3");
+      title.textContent = data.adminName || "-";
+
+      const code = document.createElement("p");
+      code.className = "code";
+      code.textContent = item.id;
+
+      const group = document.createElement("p");
+      group.textContent = "Grup: " + (data.groupName || "-");
+
+      const role = document.createElement("p");
+      role.textContent = "Jabatan: " + (data.role || "-");
+
+      const status = document.createElement("p");
+      status.textContent = data.active ? "Status: Aktif" : "Status: Nonaktif";
+
+      const remove = document.createElement("button");
+      remove.className = "danger";
+      remove.textContent = "Hapus Kode";
+
+      remove.addEventListener("click", async () => {
+
+        if (!confirm("Yakin ingin menghapus kode ini?")) return;
+
+        try {
+          await deleteDoc(doc(db, "adminCodes", item.id));
+          await loadCodes();
+        } catch (error) {
+          alert("Gagal menghapus: " + error.message);
+        }
+
+      });
+
+      card.append(title, code, group, role, status, remove);
+      list.appendChild(card);
+
+    });
+
+  } catch (error) {
+    list.textContent = "Gagal memuat: " + error.message;
+  }
+
+}
+
+
+// CREATE ADMIN CODE
+
+document.getElementById("createCodeBtn")
+.addEventListener("click", async () => {
+
+  const adminName = document.getElementById("adminName").value.trim();
+  const groupName = document.getElementById("groupName").value.trim();
+  const role = document.getElementById("adminRole").value;
+
+  if (!adminName || !groupName) {
+    alert("Nama admin dan nama grup wajib diisi!");
+    return;
+  }
+
+  const random = () =>
+    Math.random().toString(36).substring(2, 6).toUpperCase();
+
+  const code = `FAMILY-${random()}-${random()}`;
+
+  try {
+
+    await setDoc(doc(db, "adminCodes", code), {
+      adminName,
+      groupName,
+      role,
+      active: true,
+      createdAt: Date.now()
+    });
+
+    document.getElementById("newCodeResult").innerHTML = "";
+
+    const result = document.createElement("div");
+    result.className = "card";
+
+    const label = document.createElement("p");
+    label.textContent = "Kode akses berhasil dibuat:";
+
+    const value = document.createElement("h3");
+    value.className = "code";
+    value.textContent = code;
+
+    const copy = document.createElement("button");
+    copy.textContent = "Salin Kode";
+
+    copy.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(code);
+      alert("Kode berhasil disalin!");
+    });
+
+    result.append(label, value, copy);
+    document.getElementById("newCodeResult").appendChild(result);
+
+    document.getElementById("adminName").value = "";
+    document.getElementById("groupName").value = "";
+
+    await loadCodes();
+
+  } catch (error) {
+    alert("Gagal membuat kode: " + error.message);
+  }
+
+});
+
+
+// OWNER LOGOUT
+
+document.getElementById("ownerLogoutBtn")
+.addEventListener("click", async () => {
+  await signOut(auth);
+});
+
+
+// ADMIN LOGOUT
+
+document.getElementById("adminLogoutBtn")
+.addEventListener("click", () => {
+
+  localStorage.removeItem("adminAccessCode");
+
+  showPage(loginPage);
+
+});
+
+
+// CHECK LOGIN STATUS
+
+onAuthStateChanged(auth, async (user) => {
+
+  if (user) {
+
+    if (user.uid === OWNER_UID) {
+      showPage(ownerPage);
+      await loadCodes();
+    } else {
+      await signOut(auth);
+    }
+
+    return;
+  }
+
+  const savedCode = localStorage.getItem("adminAccessCode");
+
+  if (savedCode) {
+
+    try {
+      const data = await verifyAdmin(savedCode);
+      showAdmin(data);
+    } catch {
+      localStorage.removeItem("adminAccessCode");
+      showPage(loginPage);
+    }
+
+  } else {
+    showPage(loginPage);
+  }
+
+});
+
+</script>
+
+</body>
+</html>
