@@ -2,548 +2,1321 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAMILY VERIFICATION</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101525">
+  <title>FAMILY VERIFICATION</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
+    :root {
+      --bg: #0c1120;
+      --panel: #151d30;
+      --border: #2b3853;
+      --blue: #647cff;
+      --text: #f4f6ff;
+      --muted: #929db5;
+      --green: #36d399;
+      --red: #f87171;
+    }
 
-body {
-  background: #10131c;
-  color: white;
-  min-height: 100vh;
-  padding: 20px;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.container {
-  width: 100%;
-  max-width: 430px;
-  margin: 50px auto;
-  background: #1b2030;
-  padding: 25px;
-  border-radius: 15px;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', Arial, sans-serif;
+      min-height: 100vh;
+    }
 
-h2 {
-  margin-bottom: 10px;
-}
+    button,
+    input,
+    select {
+      font: inherit;
+    }
 
-.subtitle {
-  color: #aab1c5;
-  font-size: 13px;
-  margin-bottom: 25px;
-}
+    button {
+      cursor: pointer;
+    }
 
-input, select {
-  width: 100%;
-  padding: 13px;
-  margin: 8px 0;
-  border: 1px solid #394158;
-  background: #101522;
-  color: white;
-  border-radius: 8px;
-  outline: none;
-}
+    .hidden {
+      display: none !important;
+    }
 
-button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 12px;
-  background: #5578ff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    input,
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      background: #10182a;
+      border: 1px solid var(--border);
+      color: white;
+      outline: none;
+      margin-top: 8px;
+    }
 
-button:hover {
-  opacity: .85;
-}
+    input:focus,
+    select:focus {
+      border-color: var(--blue);
+    }
 
-.danger {
-  background: #d94343;
-}
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-top: 16px;
+    }
 
-.secondary {
-  background: #333d55;
-}
+    /* Buttons */
+    .btn {
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-weight: 700;
+    }
 
-.hidden {
-  display: none;
-}
+    .btn-full {
+      width: 100%;
+      margin-top: 18px;
+    }
 
-.card {
-  background: #252c3e;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 15px;
-}
+    .btn-red {
+      background: #b83c4c;
+    }
 
-.card p {
-  margin: 8px 0;
-  font-size: 14px;
-  color: #c4cbe0;
-  overflow-wrap: anywhere;
-}
+    .btn-gray {
+      background: #303c56;
+    }
 
-.code {
-  color: #8ca5ff;
-  font-weight: bold;
-  font-size: 17px;
-  overflow-wrap: anywhere;
-}
+    .btn-small {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
 
-.status {
-  font-size: 13px;
-  color: #aab1c5;
-  margin-top: 12px;
-}
+    /* Branding */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
 
-</style>
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #637cff, #925dff);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Login Section */
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(ellipse at top, #25345e 0%, transparent 55%), var(--bg);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 410px;
+      background: var(--panel);
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 70px #0006;
+    }
+
+    .login-logo {
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .login-box h2 {
+      font-size: 23px;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 7px;
+      padding: 5px;
+      background: #10182a;
+      border-radius: 11px;
+      margin-bottom: 22px;
+    }
+
+    .tab {
+      flex: 1;
+      border: 0;
+      border-radius: 8px;
+      padding: 11px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: #33446c;
+      color: white;
+    }
+
+    .message {
+      margin-top: 13px;
+      font-size: 12px;
+      color: var(--red);
+      line-height: 1.5;
+    }
+
+    /* App Structure */
+    .app {
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 245px;
+      background: #121a2b;
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      padding: 23px 16px;
+      display: flex;
+      flex-direction: column;
+      z-index: 5;
+    }
+
+    .sidebar .brand {
+      padding: 0 8px 30px;
+    }
+
+    .nav-title {
+      font-size: 10px;
+      color: #73809a;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+      margin: 15px 10px 10px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #aab5ca;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+      margin-bottom: 5px;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #263655;
+      color: white;
+    }
+
+    .nav-btn.active {
+      box-shadow: inset 3px 0 var(--blue);
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 17px;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .profile-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 7px;
+      border-top: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 39px;
+      height: 39px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #637cff, #925dff);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .profile-mini strong {
+      font-size: 12px;
+    }
+
+    .profile-mini p {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Main Content Area */
+    .main {
+      margin-left: 245px;
+      padding: 28px;
+      max-width: 1600px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 32px;
+    }
+
+    .topbar h2 {
+      font-size: 20px;
+    }
+
+    .topbar p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Owner & Admin Components */
+    .welcome {
+      background: linear-gradient(115deg, #283b69, #493c79);
+      border: 1px solid #53659b;
+      border-radius: 18px;
+      padding: 26px;
+      margin-bottom: 22px;
+    }
+
+    .welcome h1 {
+      font-size: 25px;
+      margin-bottom: 9px;
+    }
+
+    .welcome p {
+      font-size: 13px;
+      color: #d1d9f2;
+      line-height: 1.6;
+    }
+
+    .welcome-tag {
+      display: inline-block;
+      background: #ffffff20;
+      padding: 7px 11px;
+      border-radius: 20px;
+      font-size: 10px;
+      margin-bottom: 17px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      padding: 19px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: #33436b;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card h2 {
+      font-size: 26px;
+      margin-bottom: 5px;
+    }
+
+    .stat-card p {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 25px 0 15px;
+    }
+
+    .section-head h3 {
+      font-size: 16px;
+    }
+
+    .section-head p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .admin-card {
+      background: linear-gradient(145deg, #1b2942, #151d30);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .admin-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 19px;
+    }
+
+    .admin-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #536eff, #9c62f6);
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .pill {
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #164d3e;
+      color: #63e6b1;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .pill.off {
+      background: #50272f;
+      color: #ff9696;
+    }
+
+    .admin-card h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .group {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .admin-info {
+      margin-top: 17px;
+      padding-top: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .admin-info p {
+      font-size: 11px;
+      color: var(--muted);
+      margin: 8px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .admin-info strong {
+      color: white;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .card-actions button {
+      flex: 1;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 22px;
+      border-radius: 15px;
+      margin-bottom: 17px;
+    }
+
+    .panel h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .panel-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 15px;
+    }
+
+    .result-code {
+      margin-top: 18px;
+      background: #182e3a;
+      border: 1px solid #34745e;
+      border-radius: 13px;
+      padding: 17px;
+    }
+
+    .result-code h3 {
+      color: #70e7b5;
+      font-size: 19px;
+      margin: 10px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      background: var(--panel);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 35px 15px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Admin View Hero & Detail Grid */
+    .admin-hero {
+      background: linear-gradient(130deg, #283c6e, #493b78);
+      border: 1px solid #53659b;
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .admin-hero .admin-avatar {
+      width: 65px;
+      height: 65px;
+      font-size: 26px;
+      border: 2px solid #ffffff55;
+    }
+
+    .admin-hero h1 {
+      font-size: 23px;
+      margin-top: 15px;
+    }
+
+    .admin-hero p {
+      font-size: 12px;
+      color: #d4dcf5;
+      margin-top: 7px;
+    }
+
+    .admin-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .detail-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 17px;
+      border-radius: 13px;
+    }
+
+    .detail-box p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 9px;
+    }
+
+    .detail-box strong {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 800px) {
+      .sidebar {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 72px;
+        padding: 5px 7px;
+        border-right: 0;
+        border-top: 1px solid var(--border);
+        flex-direction: row;
+        justify-content: space-around;
+        background: #121a2b;
+      }
+
+      .sidebar .brand,
+      .sidebar .nav-title,
+      .sidebar-bottom {
+        display: none;
+      }
+
+      .nav-group {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .nav-btn {
+        flex: 1;
+        max-width: 100px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        padding: 7px 2px;
+        margin: 0;
+        font-size: 9px;
+        text-align: center;
+      }
+
+      .nav-btn.active {
+        box-shadow: inset 0 2px var(--blue);
+      }
+
+      .nav-icon {
+        font-size: 18px;
+      }
+
+      .main {
+        margin: 0;
+        padding: 20px 15px 95px;
+      }
+
+      .topbar {
+        margin-bottom: 22px;
+      }
+
+      .topbar h2 {
+        font-size: 18px;
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .stat-card {
+        padding: 13px;
+      }
+
+      .stat-card h2 {
+        font-size: 21px;
+      }
+
+      .stat-card p {
+        font-size: 10px;
+      }
+
+      .admin-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats .stat-card:last-child {
+        grid-column: span 2;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- HALAMAN LOGIN -->
-<div class="container" id="loginPage">
+  <!-- PAGE: LOGIN -->
+  <div id="loginPage" class="login-wrap">
+    <div class="login-box">
+      <div class="brand login-logo">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="brand-name">FAMILY</div>
+          <div class="brand-sub">VERIFICATION SYSTEM</div>
+        </div>
+      </div>
+      <h2>Welcome Back!</h2>
+      <p class="desc">Silakan masuk untuk mengakses sistem FAMILY VERIFICATION.</p>
+      
+      <div class="tabs">
+        <button class="tab active" id="adminTab">Admin</button>
+        <button class="tab" id="ownerTab">Owner</button>
+      </div>
 
-  <h2>FAMILY VERIFICATION</h2>
-  <p class="subtitle">Sistem akses admin keluarga</p>
+      <!-- Login Form: Admin -->
+      <div id="adminLogin">
+        <label for="accessCode">KODE AKSES</label>
+        <input id="accessCode" placeholder="Masukkan kode admin">
+        <button class="btn btn-full" id="adminLoginBtn">Masuk sebagai Admin →</button>
+      </div>
 
-  <div id="adminLogin">
-    <h3>Login Admin</h3>
-    <input id="accessCode" placeholder="Masukkan kode akses">
-    <button id="adminLoginBtn">Masuk sebagai Admin</button>
+      <!-- Login Form: Owner -->
+      <div id="ownerLogin" class="hidden">
+        <label for="ownerEmail">EMAIL OWNER</label>
+        <input id="ownerEmail" type="email" placeholder="Email Gmail">
+        <label for="ownerPassword">PASSWORD</label>
+        <input id="ownerPassword" type="password" placeholder="Password akun">
+        <button class="btn btn-full" id="ownerLoginBtn">Login Owner →</button>
+      </div>
+      
+      <p id="loginMessage" class="message"></p>
+    </div>
   </div>
 
-  <p class="status" id="loginMessage"></p>
+  <!-- PAGE: OWNER APP -->
+  <div id="ownerApp" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="brand-name">FAMILY</div>
+          <div class="brand-sub">VERIFICATION</div>
+        </div>
+      </div>
+      <div class="nav-title">MAIN MENU</div>
+      <div class="nav-group">
+        <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-btn" data-page="admins"><span class="nav-icon">♙</span>Kelola Admin</button>
+        <button class="nav-btn" data-page="create"><span class="nav-icon">✚</span>Buat Kode</button>
+        <button class="nav-btn" data-page="settings"><span class="nav-icon">⚙</span>Pengaturan</button>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="profile-mini">
+          <div class="avatar">A</div>
+          <div>
+            <strong>ALFIN</strong>
+            <p>OWNER ACCOUNT</p>
+          </div>
+        </div>
+        <button class="nav-btn" id="ownerLogoutBtn"><span class="nav-icon">↪</span>Logout</button>
+      </div>
+    </aside>
 
-  <hr style="border-color:#394158;margin:25px 0">
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p>FAMILY VERIFICATION / Owner Panel</p>
+        </div>
+        <span class="pill">● ONLINE</span>
+      </header>
 
-  <div>
-    <h3>Login Owner</h3>
-    <input id="ownerEmail" type="email" placeholder="Email Gmail">
-    <input id="ownerPassword" type="password" placeholder="Password">
-    <button id="ownerLoginBtn">Login Owner</button>
+      <!-- Sub Page: Dashboard -->
+      <section class="page active" id="page-dashboard">
+        <div class="welcome">
+          <span class="welcome-tag">✦ OWNER CONTROL PANEL</span>
+          <h1>Welcome back, Alfin!</h1>
+          <p>Kelola anggota admin dan kode akses komunitas FAMILY dengan mudah.</p>
+        </div>
+        
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-icon">♙</div>
+            <h2 id="totalCodes">0</h2>
+            <p>Total Admin</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <h2 id="activeCodes" class="green">0</h2>
+            <p>Admin Aktif</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⌫</div>
+            <h2 id="inactiveCodes">0</h2>
+            <p>Nonaktif</p>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <h3>Admin Terbaru</h3>
+            <p>Daftar admin yang telah terdaftar.</p>
+          </div>
+          <button class="btn btn-small" data-goto="admins">Lihat Semua</button>
+        </div>
+        <div class="admin-grid" id="recentAdmins"></div>
+      </section>
+
+      <!-- Sub Page: Kelola Admin -->
+      <section class="page" id="page-admins">
+        <div class="section-head">
+          <div>
+            <h3>Daftar Admin</h3>
+            <p>Kelola semua kode akses admin.</p>
+          </div>
+          <button class="btn btn-small" data-goto="create">+ Tambah</button>
+        </div>
+        <div class="admin-grid" id="allAdmins"></div>
+      </section>
+
+      <!-- Sub Page: Buat Kode -->
+      <section class="page" id="page-create">
+        <div class="panel">
+          <h3>✦ Buat Kode Admin</h3>
+          <p class="panel-desc">Buat kode akses untuk anggota yang diterima menjadi admin.</p>
+          
+          <form id="createForm">
+            <div class="form-grid">
+              <div>
+                <label for="adminName">NAMA ADMIN</label>
+                <input id="adminName" placeholder="Contoh: BUDI" required>
+              </div>
+              <div>
+                <label for="groupName">NAMA GRUP</label>
+                <input id="groupName" placeholder="Contoh: FRIENDS FAMILY" required>
+              </div>
+            </div>
+            
+            <label for="adminRole">JABATAN / ROLE</label>
+            <select id="adminRole" required>
+              <option value="FOUNDER">FOUNDER</option>
+              <option value="KETUA UMUM">KETUA UMUM</option>
+              <option value="WAKIL KETUA UMUM">WAKIL KETUA UMUM</option>
+              <option value="OWNER CABANG">OWNER CABANG</option>
+              <option value="KETUA CABANG">KETUA CABANG</option>
+              <option value="ADMIN" selected>ADMIN</option>
+            </select>
+            
+            <button class="btn btn-full" id="createCodeBtn" type="submit">✚ Buat Kode Akses</button>
+          </form>
+
+          <div id="newCodeResult"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Informasi</h3>
+          <p class="panel-desc">Kode akses tetap berlaku sampai Owner menghapusnya secara manual. Berikan kode hanya kepada admin yang bersangkutan.</p>
+        </div>
+      </section>
+
+      <!-- Sub Page: Pengaturan -->
+      <section class="page" id="page-settings">
+        <div class="panel">
+          <h3>⚙ Informasi Owner</h3>
+          <p class="panel-desc">Informasi akun pengelola sistem.</p>
+          <label>NAMA OWNER</label>
+          <input value="ALFIN" readonly>
+          <label>ROLE</label>
+          <input value="OWNER" readonly>
+          <label>PROJECT</label>
+          <input value="FAMILY VERIFICATION" readonly>
+        </div>
+
+        <div class="panel">
+          <h3>Informasi Sistem</h3>
+          <p class="panel-desc">
+            Database: Firebase Firestore<br>
+            Authentication: Firebase Email/Password<br>
+            Website: GitHub Pages<br>
+            Version: 2.1
+          </p>
+        </div>
+
+        <button class="btn btn-red" id="settingsLogoutBtn">Logout Akun Owner</button>
+      </section>
+    </main>
   </div>
 
-</div>
+  <!-- PAGE: ADMIN APP -->
+  <div id="adminApp" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="brand-name">FAMILY</div>
+          <div class="brand-sub">VERIFICATION</div>
+        </div>
+      </div>
+      <div class="nav-title">ADMIN MENU</div>
+      <div class="nav-group">
+        <button class="nav-btn active"><span class="nav-icon">▦</span>Dashboard</button>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="profile-mini">
+          <div class="avatar" id="miniAvatar">A</div>
+          <div>
+            <strong id="miniName">ADMIN</strong>
+            <p>ADMIN ACCOUNT</p>
+          </div>
+        </div>
+        <button class="nav-btn" id="adminLogoutBtn"><span class="nav-icon">↪</span>Logout</button>
+      </div>
+    </aside>
 
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2>Admin Dashboard</h2>
+          <p>FAMILY VERIFICATION / Admin Panel</p>
+        </div>
+        <span class="pill">● ACTIVE</span>
+      </header>
 
-<!-- HALAMAN OWNER -->
-<div class="container hidden" id="ownerPage">
+      <div class="admin-hero">
+        <span class="welcome-tag">✦ VERIFIED ADMIN</span>
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <h1 id="displayName">ADMIN</h1>
+        <p id="displayGroup">FAMILY GROUP</p>
+      </div>
 
-  <h2>OWNER DASHBOARD</h2>
-  <p class="subtitle">Panel pengelolaan akses admin</p>
-
-  <h3>Buat Kode Admin</h3>
-
-  <input id="adminName" placeholder="Nama Admin">
-  <input id="groupName" placeholder="Nama Grup">
-
-  <select id="adminRole">
-    <option value="ADMIN">ADMIN</option>
-    <option value="MODERATOR">MODERATOR</option>
-    <option value="FOUNDER">FOUNDER</option>
-  </select>
-
-  <button id="createCodeBtn">Buat Kode Akses</button>
-
-  <div id="newCodeResult"></div>
-
-  <hr style="border-color:#394158;margin:25px 0">
-
-  <h3>Daftar Kode Admin</h3>
-
-  <div id="codeList">
-    <p class="status">Memuat data...</p>
+      <div class="admin-detail-grid">
+        <div class="detail-box">
+          <p>JABATAN</p>
+          <strong id="displayRole">ADMIN</strong>
+        </div>
+        <div class="detail-box">
+          <p>STATUS</p>
+          <strong class="green">AKTIF</strong>
+        </div>
+        <div class="detail-box">
+          <p>GROUP</p>
+          <strong id="displayGroup2">-</strong>
+        </div>
+        <div class="detail-box">
+          <p>VERIFICATION</p>
+          <strong class="blue">TERVERIFIKASI</strong>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <button class="danger" id="ownerLogoutBtn">Logout Owner</button>
+  <!-- Firebase & Application Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      doc, 
+      getDoc, 
+      getDocs, 
+      setDoc, 
+      deleteDoc 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-</div>
+    // Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWEFNt0c9I_w8ndXJ1Z9vn6ytm2NrULgo",
+      authDomain: "family-verification-7a48f.firebaseapp.com",
+      projectId: "family-verification-7a48f",
+      storageBucket: "family-verification-7a48f.firebasestorage.app",
+      messagingSenderId: "673593985698",
+      appId: "1:673593985698:web:2c7eeced382d84c335a5fb"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const OWNER_UID = "UEajx5CBJhVGIy7WWfkMoxpGswv2";
 
-<!-- HALAMAN ADMIN -->
-<div class="container hidden" id="adminPage">
+    // Helper Selectors
+    const $ = id => document.getElementById(id);
 
-  <h2>ADMIN DASHBOARD</h2>
-  <p class="subtitle">Selamat datang di FAMILY VERIFICATION</p>
-
-  <div class="card">
-    <p>Nama Admin</p>
-    <h3 id="displayName">-</h3>
-
-    <p>Nama Grup</p>
-    <h3 id="displayGroup">-</h3>
-
-    <p>Jabatan</p>
-    <h3 id="displayRole">-</h3>
-
-    <p>Status</p>
-    <h3 style="color:#42d69b">AKTIF</h3>
-  </div>
-
-  <button class="danger" id="adminLogoutBtn">Keluar</button>
-
-</div>
-
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  deleteDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// FIREBASE CONFIG
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAWEFNt0c9I_w8ndXJ1Z9vn6ytm2NrULgo",
-  authDomain: "family-verification-7a48f.firebaseapp.com",
-  projectId: "family-verification-7a48f",
-  storageBucket: "family-verification-7a48f.firebasestorage.app",
-  messagingSenderId: "673593985698",
-  appId: "1:673593985698:web:2c7eeced382d84c335a5fb"
-};
-
-
-// FIREBASE INITIALIZATION
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-
-// OWNER UID
-
-const OWNER_UID = "UEajx5CBJhVGIy7WWfkMoxpGswv2";
-
-
-// ELEMENTS
-
-const loginPage = document.getElementById("loginPage");
-const ownerPage = document.getElementById("ownerPage");
-const adminPage = document.getElementById("adminPage");
-
-function showPage(page) {
-  loginPage.classList.add("hidden");
-  ownerPage.classList.add("hidden");
-  adminPage.classList.add("hidden");
-
-  page.classList.remove("hidden");
-}
-
-
-// ADMIN DASHBOARD
-
-function showAdmin(data) {
-  document.getElementById("displayName").textContent =
-    data.adminName || "-";
-
-  document.getElementById("displayGroup").textContent =
-    data.groupName || "-";
-
-  document.getElementById("displayRole").textContent =
-    data.role || "-";
-
-  showPage(adminPage);
-}
-
-
-// VERIFY ADMIN CODE
-
-async function verifyAdmin(code) {
-  const ref = doc(db, "adminCodes", code);
-  const snapshot = await getDoc(ref);
-
-  if (!snapshot.exists()) {
-    throw new Error("Kode akses tidak ditemukan!");
-  }
-
-  const data = snapshot.data();
-
-  if (data.active !== true) {
-    throw new Error("Kode akses sudah tidak aktif!");
-  }
-
-  return data;
-}
-
-
-// ADMIN LOGIN
-
-document.getElementById("adminLoginBtn")
-.addEventListener("click", async () => {
-
-  const code = document.getElementById("accessCode")
-    .value.trim();
-
-  const message = document.getElementById("loginMessage");
-
-  if (!code) {
-    message.textContent = "Masukkan kode akses terlebih dahulu!";
-    return;
-  }
-
-  message.textContent = "Memeriksa kode akses...";
-
-  try {
-    const data = await verifyAdmin(code);
-
-    localStorage.setItem("adminAccessCode", code);
-
-    showAdmin(data);
-
-  } catch (error) {
-    message.textContent = error.message;
-  }
-
-});
-
-
-// OWNER LOGIN
-
-document.getElementById("ownerLoginBtn")
-.addEventListener("click", async () => {
-
-  const email = document.getElementById("ownerEmail").value.trim();
-  const password = document.getElementById("ownerPassword").value;
-
-  const message = document.getElementById("loginMessage");
-
-  try {
-
-    const result = await signInWithEmailAndPassword(
-      auth, email, password
-    );
-
-    if (result.user.uid !== OWNER_UID) {
-      await signOut(auth);
-      throw new Error("Akun ini bukan akun Owner!");
+    function showApp(id) {
+      ["loginPage", "ownerApp", "adminApp"].forEach(x => $(x).classList.add("hidden"));
+      $(id).classList.remove("hidden");
     }
 
-  } catch (error) {
-    message.textContent = error.message;
-  }
-
-});
-
-
-// LOAD OWNER CODES
-
-async function loadCodes() {
-
-  const list = document.getElementById("codeList");
-  list.textContent = "Memuat data...";
-
-  try {
-
-    const snapshot = await getDocs(collection(db, "adminCodes"));
-
-    list.replaceChildren();
-
-    if (snapshot.empty) {
-      list.textContent = "Belum ada kode admin.";
-      return;
+    function setMessage(msg, color = "#f87171") {
+      $("loginMessage").textContent = msg;
+      $("loginMessage").style.color = color;
     }
 
-    snapshot.forEach((item) => {
+    // Login View Toggle
+    $("adminTab").onclick = () => {
+      $("adminTab").classList.add("active");
+      $("ownerTab").classList.remove("active");
+      $("adminLogin").classList.remove("hidden");
+      $("ownerLogin").classList.add("hidden");
+      setMessage("");
+    };
 
-      const data = item.data();
+    $("ownerTab").onclick = () => {
+      $("ownerTab").classList.add("active");
+      $("adminTab").classList.remove("active");
+      $("ownerLogin").classList.remove("hidden");
+      $("adminLogin").classList.add("hidden");
+      setMessage("");
+    };
 
-      const card = document.createElement("div");
-      card.className = "card";
+    // Owner Login Handler
+    $("ownerLoginBtn").onclick = async () => {
+      const email = $("ownerEmail").value.trim();
+      const password = $("ownerPassword").value;
 
-      const title = document.createElement("h3");
-      title.textContent = data.adminName || "-";
+      if (!email || !password) return setMessage("Email dan password wajib diisi!");
 
-      const code = document.createElement("p");
-      code.className = "code";
-      code.textContent = item.id;
+      $("ownerLoginBtn").disabled = true;
+      $("ownerLoginBtn").textContent = "Memproses...";
 
-      const group = document.createElement("p");
-      group.textContent = "Grup: " + (data.groupName || "-");
-
-      const role = document.createElement("p");
-      role.textContent = "Jabatan: " + (data.role || "-");
-
-      const status = document.createElement("p");
-      status.textContent = data.active ? "Status: Aktif" : "Status: Nonaktif";
-
-      const remove = document.createElement("button");
-      remove.className = "danger";
-      remove.textContent = "Hapus Kode";
-
-      remove.addEventListener("click", async () => {
-
-        if (!confirm("Yakin ingin menghapus kode ini?")) return;
-
-        try {
-          await deleteDoc(doc(db, "adminCodes", item.id));
-          await loadCodes();
-        } catch (error) {
-          alert("Gagal menghapus: " + error.message);
+      try {
+        const r = await signInWithEmailAndPassword(auth, email, password);
+        if (r.user.uid !== OWNER_UID) {
+          await signOut(auth);
+          setMessage("Akun ini bukan Owner!");
         }
+      } catch (e) {
+        setMessage("Login gagal: " + e.message);
+      } finally {
+        $("ownerLoginBtn").disabled = false;
+        $("ownerLoginBtn").textContent = "Login Owner →";
+      }
+    };
 
+    // Admin Access Code Verification
+    async function verifyAdmin(code) {
+      const s = await getDoc(doc(db, "adminCodes", code));
+      if (!s.exists()) throw Error("Kode akses tidak ditemukan!");
+
+      const d = s.data();
+      if (d.active !== true) throw Error("Kode akses sudah dinonaktifkan!");
+
+      return d;
+    }
+
+    $("adminLoginBtn").onclick = async () => {
+      const code = $("accessCode").value.trim();
+      if (!code) return setMessage("Masukkan kode akses!");
+
+      $("adminLoginBtn").disabled = true;
+      $("adminLoginBtn").textContent = "Memverifikasi...";
+
+      try {
+        showAdmin(await verifyAdmin(code));
+        localStorage.setItem("adminAccessCode", code);
+      } catch (e) {
+        setMessage(e.message);
+      } finally {
+        $("adminLoginBtn").disabled = false;
+        $("adminLoginBtn").textContent = "Masuk sebagai Admin →";
+      }
+    };
+
+    function showAdmin(d) {
+      $("displayName").textContent = d.adminName || "ADMIN";
+      $("displayGroup").textContent = d.groupName || "-";
+      $("displayGroup2").textContent = d.groupName || "-";
+      $("displayRole").textContent = d.role || "ADMIN";
+
+      const initial = (d.adminName || "A").charAt(0).toUpperCase();
+      $("adminAvatar").textContent = initial;
+      $("miniAvatar").textContent = initial;
+      $("miniName").textContent = d.adminName || "ADMIN";
+
+      showApp("adminApp");
+    }
+
+    // Navigation Logic
+    function navigate(p) {
+      document.querySelectorAll("#ownerApp .page").forEach(x => x.classList.remove("active"));
+      $("page-" + p)?.classList.add("active");
+
+      document.querySelectorAll("#ownerApp .nav-btn[data-page]").forEach(x => {
+        x.classList.toggle("active", x.dataset.page === p);
       });
 
-      card.append(title, code, group, role, status, remove);
-      list.appendChild(card);
+      $("pageTitle").textContent = {
+        dashboard: "Dashboard",
+        admins: "Kelola Admin",
+        create: "Buat Kode Admin",
+        settings: "Pengaturan"
+      }[p] || "Dashboard";
 
+      if (p === "admins" || p === "dashboard") loadCodes();
+      window.scrollTo(0, 0);
+    }
+
+    document.querySelectorAll("[data-page]").forEach(x => {
+      x.onclick = () => navigate(x.dataset.page);
     });
 
-  } catch (error) {
-    list.textContent = "Gagal memuat: " + error.message;
-  }
-
-}
-
-
-// CREATE ADMIN CODE
-
-document.getElementById("createCodeBtn")
-.addEventListener("click", async () => {
-
-  const adminName = document.getElementById("adminName").value.trim();
-  const groupName = document.getElementById("groupName").value.trim();
-  const role = document.getElementById("adminRole").value;
-
-  if (!adminName || !groupName) {
-    alert("Nama admin dan nama grup wajib diisi!");
-    return;
-  }
-
-  const random = () =>
-    Math.random().toString(36).substring(2, 6).toUpperCase();
-
-  const code = `FAMILY-${random()}-${random()}`;
-
-  try {
-
-    await setDoc(doc(db, "adminCodes", code), {
-      adminName,
-      groupName,
-      role,
-      active: true,
-      createdAt: Date.now()
+    document.querySelectorAll("[data-goto]").forEach(x => {
+      x.onclick = () => navigate(x.dataset.goto);
     });
 
-    document.getElementById("newCodeResult").innerHTML = "";
+    // UI Component Builders
+    function createAdminCard(item) {
+      const d = item.data;
+      const active = d.active === true;
+      
+      const c = document.createElement("article");
+      c.className = "admin-card";
 
-    const result = document.createElement("div");
-    result.className = "card";
+      const top = document.createElement("div");
+      top.className = "admin-card-top";
 
-    const label = document.createElement("p");
-    label.textContent = "Kode akses berhasil dibuat:";
+      const av = document.createElement("div");
+      av.className = "admin-avatar";
+      av.textContent = (d.adminName || "A").charAt(0).toUpperCase();
 
-    const value = document.createElement("h3");
-    value.className = "code";
-    value.textContent = code;
+      const st = document.createElement("span");
+      st.className = "pill" + (active ? "" : " off");
+      st.textContent = active ? "● ACTIVE" : "● NONAKTIF";
 
-    const copy = document.createElement("button");
-    copy.textContent = "Salin Kode";
+      top.append(av, st);
 
-    copy.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(code);
-      alert("Kode berhasil disalin!");
-    });
+      const n = document.createElement("h3");
+      n.textContent = d.adminName || "Tanpa Nama";
 
-    result.append(label, value, copy);
-    document.getElementById("newCodeResult").appendChild(result);
+      const g = document.createElement("p");
+      g.className = "group";
+      g.textContent = d.groupName || "-";
 
-    document.getElementById("adminName").value = "";
-    document.getElementById("groupName").value = "";
+      const info = document.createElement("div");
+      info.className = "admin-info";
 
-    await loadCodes();
+      const code = document.createElement("p");
+      const b = document.createElement("strong");
+      const cv = document.createElement("span");
+      b.textContent = "Kode: ";
+      cv.textContent = item.id;
+      code.append(b, cv);
 
-  } catch (error) {
-    alert("Gagal membuat kode: " + error.message);
-  }
+      const role = document.createElement("p");
+      role.textContent = "Jabatan: " + (d.role || "ADMIN");
 
-});
+      const acts = document.createElement("div");
+      acts.className = "card-actions";
 
+      const cp = document.createElement("button");
+      cp.className = "btn btn-gray btn-small";
+      cp.textContent = "Salin Kode";
+      cp.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(item.id);
+          alert("Kode berhasil disalin!");
+        } catch {
+          alert("Salin manual: " + item.id);
+        }
+      };
 
-// OWNER LOGOUT
+      const del = document.createElement("button");
+      del.className = "btn btn-red btn-small";
+      del.textContent = "Hapus";
+      del.onclick = async () => {
+        if (!confirm("Hapus kode akses " + item.id + "?")) return;
+        try {
+          await deleteDoc(doc(db, "adminCodes", item.id));
+          alert("Kode berhasil dihapus!");
+          loadCodes();
+        } catch (e) {
+          alert("Gagal menghapus: " + e.message);
+        }
+      };
 
-document.getElementById("ownerLogoutBtn")
-.addEventListener("click", async () => {
-  await signOut(auth);
-});
+      acts.append(cp, del);
+      info.append(code, role, acts);
+      c.append(top, n, g, info);
 
+      return c;
+    }
 
-// ADMIN LOGOUT
+    // Data Loaders
+    async function loadCodes() {
+      $("allAdmins").textContent = "Memuat data...";
+      $("recentAdmins").textContent = "";
 
-document.getElementById("adminLogoutBtn")
-.addEventListener("click", () => {
+      try {
+        const s = await getDocs(collection(db, "adminCodes"));
+        const items = s.docs.map(x => ({ id: x.id, data: x.data() })).reverse();
+        const total = items.length;
+        const active = items.filter(x => x.data.active === true).length;
 
-  localStorage.removeItem("adminAccessCode");
+        $("totalCodes").textContent = total;
+        $("activeCodes").textContent = active;
+        $("inactiveCodes").textContent = total - active;
 
-  showPage(loginPage);
+        $("allAdmins").innerHTML = "";
+        $("recentAdmins").innerHTML = "";
 
-});
+        if (!total) {
+          $("allAdmins").innerHTML = '<div class="empty">Belum ada admin terdaftar.</div>';
+          $("recentAdmins").innerHTML = '<div class="empty">Belum ada admin terbaru.</div>';
+          return;
+        }
 
+        items.forEach(x => $("allAdmins").append(createAdminCard(x)));
+        items.slice(0, 4).forEach(x => $("recentAdmins").append(createAdminCard(x)));
+      } catch (e) {
+        $("allAdmins").textContent = "Gagal memuat data: " + e.message;
+        $("recentAdmins").textContent = "Gagal memuat data.";
+      }
+    }
 
-// CHECK LOGIN STATUS
+    // Code Creation Form Handler
+    $("createForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const adminName = $("adminName").value.trim();
+      const groupName = $("groupName").value.trim();
+      const role = $("adminRole").value;
 
-onAuthStateChanged(auth, async (user) => {
+      if (!adminName || !groupName) return alert("Lengkapi semua data!");
 
-  if (user) {
+      const btn = $("createCodeBtn");
+      btn.disabled = true;
+      btn.textContent = "Membuat kode...";
 
-    if (user.uid === OWNER_UID) {
-      showPage(ownerPage);
-      await loadCodes();
-    } else {
+      try {
+        let code, ref, exists = true;
+        while (exists) {
+          const r = () => (Math.random().toString(36).substring(2, 6)).toUpperCase();
+          code = "FAMILY-" + r() + "-" + r();
+          ref = doc(db, "adminCodes", code);
+          exists = (await getDoc(ref)).exists();
+        }
+
+        await setDoc(ref, {
+          adminName,
+          groupName,
+          role,
+          active: true,
+          createdAt: Date.now()
+        });
+
+        $("newCodeResult").innerHTML = "";
+        const box = document.createElement("div");
+        box.className = "result-code";
+
+        const h = document.createElement("p");
+        h.textContent = "✓ KODE BERHASIL DIBUAT";
+
+        const v = document.createElement("h3");
+        v.textContent = code;
+
+        const cp = document.createElement("button");
+        cp.className = "btn btn-small";
+        cp.textContent = "Salin Kode";
+        cp.onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(code);
+            alert("Kode berhasil disalin!");
+          } catch {
+            alert("Salin manual: " + code);
+          }
+        };
+
+        box.append(h, v, cp);
+        $("newCodeResult").append(box);
+
+        $("createForm").reset();
+        await loadCodes();
+      } catch (e) {
+        alert("Gagal membuat kode: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✚ Buat Kode Akses";
+      }
+    };
+
+    // Session Management & Logout
+    async function logoutOwner() {
       await signOut(auth);
     }
+    $("ownerLogoutBtn").onclick = logoutOwner;
+    $("settingsLogoutBtn").onclick = logoutOwner;
 
-    return;
-  }
-
-  const savedCode = localStorage.getItem("adminAccessCode");
-
-  if (savedCode) {
-
-    try {
-      const data = await verifyAdmin(savedCode);
-      showAdmin(data);
-    } catch {
+    $("adminLogoutBtn").onclick = () => {
       localStorage.removeItem("adminAccessCode");
-      showPage(loginPage);
-    }
+      showApp("loginPage");
+      $("accessCode").value = "";
+    };
 
-  } else {
-    showPage(loginPage);
-  }
+    // Firebase Auth State Observer
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        if (user.uid === OWNER_UID) {
+          showApp("ownerApp");
+          navigate("dashboard");
+        } else {
+          await signOut(auth);
+          showApp("loginPage");
+        }
+        return;
+      }
 
-});
-
-</script>
-
+      const code = localStorage.getItem("adminAccessCode");
+      if (code) {
+        try {
+          showAdmin(await verifyAdmin(code));
+        } catch {
+          localStorage.removeItem("adminAccessCode");
+          showApp("loginPage");
+        }
+      } else {
+        showApp("loginPage");
+      }
+    });
+  </script>
 </body>
 </html>
