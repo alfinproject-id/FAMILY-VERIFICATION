@@ -3,261 +3,356 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101525">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0B0F19">
   <title>FAMILY VERIFICATION</title>
+  <!-- Library html2canvas untuk mengunduh ID Card sebagai Gambar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
     :root {
-      --bg: #0c1120;
-      --panel: #151d30;
-      --border: #2b3853;
-      --blue: #647cff;
-      --text: #f4f6ff;
-      --muted: #929db5;
-      --green: #36d399;
+      --bg: #070a12;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #17203b 0%, #070a12 80%);
+      --panel: rgba(18, 25, 44, 0.7);
+      --panel-solid: #12192c;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(99, 124, 255, 0.3);
+      --accent: #637cff;
+      --accent-gradient: linear-gradient(135deg, #637cff 0%, #925dff 100%);
+      --accent-glow: 0 8px 24px rgba(99, 124, 255, 0.35);
+      --text: #f8fafc;
+      --muted: #8e9bb4;
+      --green: #2dd4bf;
+      --green-glow: 0 4px 14px rgba(45, 212, 191, 0.3);
       --red: #f87171;
+      --red-glow: 0 4px 14px rgba(248, 113, 113, 0.3);
+      --gold: #fbbf24;
+      --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
     }
 
     body {
       background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text);
-      font-family: 'Inter', Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    button,
-    input,
-    select {
+    button, input, select {
       font: inherit;
+      outline: none !important;
+      box-shadow: none;
+    }
+    button:focus, input:focus, select:focus {
+      outline: none !important;
     }
 
     button {
       cursor: pointer;
+      border: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .hidden {
       display: none !important;
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
-      padding: 13px 14px;
-      border-radius: 10px;
-      background: #10182a;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(10, 15, 26, 0.7);
       border: 1px solid var(--border);
       color: white;
-      outline: none;
       margin-top: 8px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
     }
 
-    input:focus,
-    select:focus {
-      border-color: var(--blue);
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(99, 124, 255, 0.25) !important;
+      background: rgba(15, 23, 42, 0.9);
     }
 
     label {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
       color: var(--muted);
       display: block;
-      margin-top: 16px;
+      margin-top: 18px;
+      text-transform: uppercase;
     }
 
-    /* Buttons */
     .btn {
-      padding: 12px 16px;
-      border: 0;
-      border-radius: 10px;
-      background: var(--blue);
+      padding: 13px 20px;
+      border-radius: 12px;
+      background: var(--accent-gradient);
       color: white;
       font-weight: 700;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--accent-glow);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(99, 124, 255, 0.5);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
     }
 
     .btn-full {
       width: 100%;
-      margin-top: 18px;
+      margin-top: 22px;
     }
 
     .btn-red {
-      background: #b83c4c;
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      box-shadow: var(--red-glow);
+    }
+    .btn-red:hover {
+      box-shadow: 0 10px 22px rgba(239, 68, 68, 0.4);
     }
 
     .btn-gray {
-      background: #303c56;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-gray:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-gold {
+      background: var(--gold-gradient);
+      color: #0c101c;
+      box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+    }
+    .btn-gold:hover {
+      box-shadow: 0 12px 28px rgba(251, 191, 36, 0.5);
     }
 
     .btn-small {
-      padding: 8px 12px;
+      padding: 9px 14px;
       font-size: 12px;
+      border-radius: 9px;
     }
 
-    /* Branding */
     .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 12px;
     }
 
     .brand-icon {
-      width: 43px;
-      height: 43px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, #637cff, #925dff);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--accent-gradient);
       display: grid;
       place-items: center;
       font-size: 22px;
+      box-shadow: var(--accent-glow);
     }
 
     .brand-name {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      background: linear-gradient(to right, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-sub {
-      font-size: 10px;
+      font-size: 9px;
+      font-weight: 700;
       color: var(--muted);
-      margin-top: 3px;
+      letter-spacing: 1px;
+      margin-top: 2px;
     }
 
-    /* Login Section */
     .login-wrap {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: radial-gradient(ellipse at top, #25345e 0%, transparent 55%), var(--bg);
+      padding: 24px;
+      position: relative;
+    }
+
+    .login-wrap::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: rgba(99, 124, 255, 0.15);
+      filter: blur(100px);
+      border-radius: 50%;
+      top: 20%;
+      z-index: 0;
     }
 
     .login-box {
       width: 100%;
-      max-width: 410px;
-      background: var(--panel);
-      padding: 28px;
+      max-width: 420px;
+      background: rgba(18, 25, 44, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 34px;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 0 20px 70px #0006;
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
     }
 
     .login-logo {
       justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .login-box h2 {
-      font-size: 23px;
+      font-size: 24px;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
     .desc {
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 25px;
+      margin-bottom: 26px;
       line-height: 1.6;
     }
 
     .tabs {
       display: flex;
-      gap: 7px;
-      padding: 5px;
-      background: #10182a;
-      border-radius: 11px;
-      margin-bottom: 22px;
+      gap: 6px;
+      padding: 6px;
+      background: rgba(9, 13, 22, 0.6);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .tab {
       flex: 1;
       border: 0;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 11px;
       background: transparent;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
     }
 
     .tab.active {
-      background: #33446c;
+      background: var(--accent-gradient);
       color: white;
+      box-shadow: var(--accent-glow);
     }
 
     .message {
-      margin-top: 13px;
-      font-size: 12px;
+      margin-top: 15px;
+      font-size: 12.5px;
       color: var(--red);
       line-height: 1.5;
+      text-align: center;
+      font-weight: 600;
     }
 
-    /* App Structure */
     .app {
       min-height: 100vh;
     }
 
     .sidebar {
-      width: 245px;
-      background: #121a2b;
+      width: 260px;
+      background: rgba(14, 20, 36, 0.85);
+      backdrop-filter: blur(16px);
       border-right: 1px solid var(--border);
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
-      padding: 23px 16px;
+      padding: 26px 18px;
       display: flex;
       flex-direction: column;
-      z-index: 5;
+      z-index: 20;
     }
 
     .sidebar .brand {
-      padding: 0 8px 30px;
+      padding: 0 6px 32px;
     }
 
     .nav-title {
       font-size: 10px;
-      color: #73809a;
-      font-weight: 700;
-      letter-spacing: 1.3px;
-      margin: 15px 10px 10px;
+      color: #64748b;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin: 10px 12px 12px;
     }
 
     .nav-btn {
       width: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 13px;
-      border: 0;
-      border-radius: 10px;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 12px;
       background: transparent;
-      color: #aab5ca;
-      font-size: 13px;
+      color: var(--muted);
+      font-size: 13.5px;
       font-weight: 600;
       text-align: left;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
-    .nav-btn:hover,
-    .nav-btn.active {
-      background: #263655;
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
       color: white;
     }
 
     .nav-btn.active {
-      box-shadow: inset 3px 0 var(--blue);
+      background: linear-gradient(90deg, rgba(99, 124, 255, 0.15) 0%, rgba(99, 124, 255, 0.03) 100%);
+      color: white;
+      font-weight: 700;
+      border-left: 3px solid var(--accent);
+      border-radius: 4px 12px 12px 4px;
     }
 
     .nav-icon {
       width: 20px;
       text-align: center;
-      font-size: 17px;
+      font-size: 18px;
     }
 
     .sidebar-bottom {
@@ -267,38 +362,41 @@
     .profile-mini {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 7px;
+      gap: 12px;
+      padding: 14px 10px;
       border-top: 1px solid var(--border);
       margin-bottom: 12px;
     }
 
     .avatar {
-      width: 39px;
-      height: 39px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #637cff, #925dff);
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--accent-gradient);
       display: grid;
       place-items: center;
       font-weight: 800;
+      font-size: 16px;
       flex-shrink: 0;
+      box-shadow: var(--accent-glow);
     }
 
     .profile-mini strong {
-      font-size: 12px;
+      font-size: 13px;
+      display: block;
     }
 
     .profile-mini p {
       font-size: 10px;
       color: var(--muted);
-      margin-top: 4px;
+      margin-top: 2px;
+      font-weight: 600;
     }
 
-    /* Main Content Area */
     .main {
-      margin-left: 245px;
-      padding: 28px;
-      max-width: 1600px;
+      margin-left: 260px;
+      padding: 32px 40px;
+      max-width: 1500px;
     }
 
     .topbar {
@@ -306,187 +404,321 @@
       align-items: center;
       justify-content: space-between;
       gap: 15px;
-      margin-bottom: 32px;
+      margin-bottom: 35px;
     }
 
     .topbar h2 {
-      font-size: 20px;
+      font-size: 22px;
+      font-weight: 800;
     }
 
     .topbar p {
       font-size: 12px;
       color: var(--muted);
-      margin-top: 5px;
+      margin-top: 4px;
     }
 
     .page {
       display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .page.active {
       display: block;
     }
 
-    /* Owner & Admin Components */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .welcome {
-      background: linear-gradient(115deg, #283b69, #493c79);
-      border: 1px solid #53659b;
-      border-radius: 18px;
-      padding: 26px;
-      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(40, 60, 110, 0.6) 0%, rgba(73, 60, 121, 0.6) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(146, 93, 255, 0.25);
+      border-radius: 22px;
+      padding: 30px;
+      margin-bottom: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     }
 
     .welcome h1 {
-      font-size: 25px;
-      margin-bottom: 9px;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 10px;
     }
 
     .welcome p {
-      font-size: 13px;
-      color: #d1d9f2;
+      font-size: 13.5px;
+      color: #cbd5e1;
       line-height: 1.6;
     }
 
     .welcome-tag {
       display: inline-block;
-      background: #ffffff20;
-      padding: 7px 11px;
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: 30px;
       font-size: 10px;
-      margin-bottom: 17px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
+      gap: 18px;
+      margin-bottom: 30px;
     }
 
     .stat-card {
-      padding: 19px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      position: relative;
+      padding: 22px;
+      background: linear-gradient(145deg, rgba(21, 29, 48, 0.8), rgba(13, 18, 33, 0.9));
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--accent-gradient);
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(99, 124, 255, 0.4);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
     }
 
     .stat-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: #33436b;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(99, 124, 255, 0.2), rgba(146, 93, 255, 0.1));
+      border: 1px solid rgba(99, 124, 255, 0.3);
+      color: var(--accent);
       display: grid;
       place-items: center;
-      font-size: 18px;
-      margin-bottom: 15px;
+      font-size: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(99, 124, 255, 0.15);
     }
 
     .stat-card h2 {
-      font-size: 26px;
-      margin-bottom: 5px;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
     }
 
     .stat-card p {
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 700;
       color: var(--muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
+
+    .green { color: var(--green); }
+    .blue { color: var(--accent); }
 
     .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin: 25px 0 15px;
+      margin: 32px 0 18px;
     }
 
     .section-head h3 {
-      font-size: 16px;
+      font-size: 17px;
+      font-weight: 700;
     }
 
     .section-head p {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
-      margin-top: 5px;
+      margin-top: 4px;
     }
 
     .admin-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 15px;
+      gap: 20px;
     }
 
     .admin-card {
-      background: linear-gradient(145deg, #1b2942, #151d30);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 18px;
+      position: relative;
+      background: linear-gradient(145deg, rgba(23, 33, 56, 0.85) 0%, rgba(13, 19, 34, 0.95) 100%);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 24px;
       min-width: 0;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .admin-card::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(99, 124, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: all 0.35s ease;
+    }
+
+    .admin-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(146, 93, 255, 0.4);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .admin-card:hover::after {
+      transform: scale(1.4);
+      background: radial-gradient(circle, rgba(146, 93, 255, 0.25) 0%, transparent 70%);
     }
 
     .admin-card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 19px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
     .admin-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #536eff, #9c62f6);
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--accent-gradient);
       display: grid;
       place-items: center;
-      font-size: 19px;
+      font-size: 22px;
       font-weight: 800;
+      color: white;
+      box-shadow: 0 8px 20px rgba(99, 124, 255, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
+    .admin-avatar img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    .photo-preview-wrap {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .photo-preview {
+      width: 64px; height: 64px; border-radius: 16px;
+      object-fit: cover; border: 1px solid var(--border-glow);
+      display: none;
+    }
+
+    .id-card-avatar { overflow: hidden; }
+    .id-card-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
     .pill {
-      padding: 6px 9px;
-      border-radius: 20px;
-      background: #164d3e;
-      color: #63e6b1;
-      font-size: 9px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      background: rgba(45, 212, 191, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      font-size: 10px;
       font-weight: 800;
+      letter-spacing: 0.8px;
+      backdrop-filter: blur(8px);
     }
 
     .pill.off {
-      background: #50272f;
-      color: #ff9696;
+      background: rgba(248, 113, 113, 0.12);
+      color: var(--red);
+      border-color: rgba(248, 113, 113, 0.3);
     }
 
     .admin-card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      margin-bottom: 4px;
+      color: #ffffff;
     }
 
     .group {
-      font-size: 11px;
-      color: var(--muted);
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .admin-info {
-      margin-top: 17px;
-      padding-top: 13px;
-      border-top: 1px solid var(--border);
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: rgba(9, 13, 23, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
     }
 
     .admin-info p {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
-      margin: 8px 0;
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       overflow-wrap: anywhere;
     }
 
     .admin-info strong {
       color: white;
+      font-weight: 700;
+    }
+
+    .code-badge {
+      font-family: monospace;
+      font-size: 12px;
+      background: rgba(99, 124, 255, 0.15);
+      color: #a5b4fc;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px dashed rgba(99, 124, 255, 0.3);
+      letter-spacing: 0.5px;
     }
 
     .card-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 15px;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .card-actions button {
@@ -495,19 +727,21 @@
 
     .panel {
       background: var(--panel);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      padding: 22px;
-      border-radius: 15px;
-      margin-bottom: 17px;
+      padding: 26px;
+      border-radius: 20px;
+      margin-bottom: 22px;
     }
 
     .panel h3 {
-      font-size: 16px;
+      font-size: 17px;
+      font-weight: 700;
       margin-bottom: 8px;
     }
 
     .panel-desc {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--muted);
       line-height: 1.6;
     }
@@ -515,86 +749,294 @@
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0 15px;
+      gap: 0 18px;
     }
 
     .result-code {
-      margin-top: 18px;
-      background: #182e3a;
-      border: 1px solid #34745e;
-      border-radius: 13px;
-      padding: 17px;
+      margin-top: 22px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .result-code p {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 12px;
     }
 
     .result-code h3 {
-      color: #70e7b5;
-      font-size: 19px;
-      margin: 10px 0;
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin: 10px 0 14px;
       overflow-wrap: anywhere;
     }
 
     .empty {
       background: var(--panel);
       border: 1px dashed var(--border);
-      border-radius: 14px;
-      padding: 35px 15px;
+      border-radius: 18px;
+      padding: 40px 20px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
     }
 
-    /* Admin View Hero & Detail Grid */
-    .admin-hero {
-      background: linear-gradient(130deg, #283c6e, #493b78);
-      border: 1px solid #53659b;
-      border-radius: 18px;
-      padding: 25px;
-      margin-bottom: 20px;
+    /* 
+      ======================================================
+      FUTURISTIC & EXCLUSIVE ADMIN DIGITAL ID CARD UI
+      ======================================================
+    */
+    .id-card-wrapper {
+      max-width: 480px;
+      margin: 0 auto 30px auto;
+      perspective: 1000px;
     }
 
-    .admin-hero .admin-avatar {
-      width: 65px;
-      height: 65px;
-      font-size: 26px;
-      border: 2px solid #ffffff55;
+    /* Main Digital Pass Card Container */
+    .id-card-container {
+      position: relative;
+      background: radial-gradient(circle at 80% 20%, rgba(99, 124, 255, 0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 10% 90%, rgba(146, 93, 255, 0.22) 0%, transparent 60%),
+                  linear-gradient(145deg, #12192e 0%, #0a0f1d 100%);
+      border: 1.5px solid rgba(99, 124, 255, 0.4);
+      border-radius: 26px;
+      padding: 30px 26px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      overflow: hidden;
     }
 
-    .admin-hero h1 {
-      font-size: 23px;
-      margin-top: 15px;
+    /* Decorative Tech Hologram Lines & Chip */
+    .id-card-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.015) 3px,
+        rgba(255, 255, 255, 0.015) 6px
+      );
+      pointer-events: none;
     }
 
-    .admin-hero p {
+    .id-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+
+    .id-card-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .id-card-brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent-gradient);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      box-shadow: 0 4px 14px rgba(99, 124, 255, 0.4);
+    }
+
+    .id-card-brand-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .id-card-brand-sub {
+      font-size: 8.5px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.8px;
+    }
+
+    .id-chip {
+      width: 38px;
+      height: 28px;
+      background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .id-chip::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Admin Main Center Avatar & Badge */
+    .id-card-profile {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .id-avatar-outer {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .id-avatar-outer::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 28px;
+      background: var(--accent-gradient);
+      opacity: 0.7;
+      filter: blur(8px);
+    }
+
+    .id-card-avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      font-weight: 800;
+      color: white;
+      position: relative;
+      border: 3px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .id-verified-seal {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 26px;
+      height: 26px;
+      background: #10b981;
+      border: 2px solid #0a0f1d;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      color: white;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.5);
+    }
+
+    .id-card-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+
+    .id-card-group-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       font-size: 12px;
-      color: #d4dcf5;
-      margin-top: 7px;
+      font-weight: 700;
+      color: #cbd5e1;
     }
 
-    .admin-detail-grid {
+    /* Grid Informatif di Dalam Kartu */
+    .id-card-details {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      background: rgba(5, 8, 16, 0.6);
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 18px;
+    }
+
+    .id-detail-item {
+      padding: 6px 4px;
+    }
+
+    .id-detail-item label {
+      font-size: 9px;
+      margin-top: 0;
+      color: #718096;
+      letter-spacing: 1px;
+    }
+
+    .id-detail-item val {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 3px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .id-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+    }
+
+    .id-barcode {
+      font-family: monospace;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .id-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(45, 212, 191, 0.15);
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+
+    /* Action Panel for Download ID Card */
+    .id-card-actions {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
       gap: 12px;
     }
 
-    .detail-box {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 17px;
-      border-radius: 13px;
-    }
-
-    .detail-box p {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 9px;
-    }
-
-    .detail-box strong {
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    /* Responsive Design */
     @media (max-width: 800px) {
       .sidebar {
         top: auto;
@@ -603,12 +1045,13 @@
         bottom: 0;
         width: 100%;
         height: 72px;
-        padding: 5px 7px;
+        padding: 6px 12px;
         border-right: 0;
         border-top: 1px solid var(--border);
         flex-direction: row;
         justify-content: space-around;
-        background: #121a2b;
+        background: rgba(11, 15, 25, 0.95);
+        backdrop-filter: blur(20px);
       }
 
       .sidebar .brand,
@@ -621,22 +1064,27 @@
         display: flex;
         width: 100%;
         justify-content: space-around;
+        align-items: center;
       }
 
       .nav-btn {
         flex: 1;
-        max-width: 100px;
+        max-width: 80px;
         flex-direction: column;
         justify-content: center;
         gap: 4px;
-        padding: 7px 2px;
+        padding: 8px 0;
         margin: 0;
-        font-size: 9px;
+        font-size: 10px;
         text-align: center;
+        border-radius: 10px;
       }
 
       .nav-btn.active {
-        box-shadow: inset 0 2px var(--blue);
+        border-left: 0;
+        border-top: 2px solid var(--accent);
+        border-radius: 0 0 10px 10px;
+        background: rgba(99, 124, 255, 0.1);
       }
 
       .nav-icon {
@@ -645,27 +1093,27 @@
 
       .main {
         margin: 0;
-        padding: 20px 15px 95px;
+        padding: 22px 16px 95px;
       }
 
       .topbar {
-        margin-bottom: 22px;
+        margin-bottom: 24px;
       }
 
       .topbar h2 {
-        font-size: 18px;
+        font-size: 19px;
       }
 
       .stats {
-        gap: 9px;
+        gap: 10px;
       }
 
       .stat-card {
-        padding: 13px;
+        padding: 16px;
       }
 
       .stat-card h2 {
-        font-size: 21px;
+        font-size: 22px;
       }
 
       .stat-card p {
@@ -675,6 +1123,22 @@
       .admin-grid,
       .form-grid {
         grid-template-columns: 1fr;
+      }
+
+      .welcome {
+        padding: 22px;
+      }
+      
+      .welcome h1 {
+        font-size: 22px;
+      }
+
+      .id-card-container {
+        padding: 24px 20px;
+      }
+
+      .id-card-name {
+        font-size: 20px;
       }
     }
 
@@ -687,7 +1151,120 @@
         grid-column: span 2;
       }
     }
-  </style>
+  
+    /* Formal identity-card layout */
+    .id-card-wrapper { max-width: 760px; margin: 24px auto; }
+    .id-card-container {
+      aspect-ratio: 1.586 / 1;
+      min-height: 0;
+      padding: clamp(14px, 3.2vw, 28px);
+      border-radius: 16px;
+      color: #172b46;
+      background:
+        radial-gradient(circle at 92% 12%, rgba(59,130,246,.12), transparent 28%),
+        repeating-linear-gradient(135deg, rgba(30,64,175,.025) 0 2px, transparent 2px 7px),
+        linear-gradient(135deg, #f8fbff 0%, #e8f1fb 52%, #f7fbff 100%);
+      border: 1px solid #a9bfd8;
+      box-shadow: 0 18px 42px rgba(0,0,0,.35), inset 0 0 0 4px rgba(255,255,255,.75);
+      overflow: hidden;
+    }
+    .id-card-container::before {
+      inset: 0; width: 100%; height: 100%;
+      background:
+        repeating-radial-gradient(circle at 85% 85%, transparent 0 9px, rgba(37,99,235,.055) 10px 11px, transparent 12px 19px);
+      opacity: .75;
+    }
+    .id-card-header {
+      position: relative; z-index: 1;
+      border-bottom: 2px solid #234b78;
+      padding-bottom: 10px; margin-bottom: 14px;
+    }
+    .id-card-brand-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: #173d67; box-shadow: none; color: #fff;
+    }
+    .id-card-brand-title { color: #173d67; font-size: clamp(11px, 2vw, 15px); }
+    .id-card-brand-sub { color: #55708e; font-size: 8px; }
+    .id-chip {
+      width: 34px; height: 25px;
+      background: linear-gradient(135deg,#d9e2ec,#9fb3c8);
+      border: 1px solid #8399b0; box-shadow: none;
+    }
+    .id-chip::after { background: rgba(23,61,103,.28); }
+    .id-card-profile {
+      display: flex; align-items: center; gap: clamp(10px, 2.5vw, 22px);
+      text-align: left; margin: 0 0 14px; z-index: 1;
+    }
+    .id-avatar-outer { flex: 0 0 auto; margin: 0; }
+    .id-avatar-outer::before { display: none; }
+    .id-card-avatar {
+      width: clamp(66px, 12vw, 104px); height: clamp(78px, 14vw, 126px);
+      border-radius: 5px; background: #d7e3ef; color: #173d67;
+      border: 3px solid #fff; box-shadow: 0 2px 8px rgba(20,50,80,.22);
+      font-size: 30px;
+    }
+    .id-verified-seal {
+      width: 21px; height: 21px; right: -7px; bottom: -6px;
+      border: 2px solid #f4f8fc; box-shadow: none;
+    }
+    .id-card-person { min-width: 0; flex: 1; }
+    .id-card-overline {
+      color: #55708e; font-size: 8px; font-weight: 800;
+      letter-spacing: 1.1px; margin-bottom: 4px;
+    }
+    .id-card-name {
+      color: #102f50; font-size: clamp(16px, 3.4vw, 25px);
+      line-height: 1.12; letter-spacing: .2px; margin: 0 0 7px;
+      overflow-wrap: anywhere;
+    }
+    .id-card-group-pill {
+      padding: 4px 8px; border-radius: 4px;
+      background: #dce9f6; border: 1px solid #b7cce1;
+      color: #24496f; font-size: clamp(8px, 1.6vw, 10px);
+      font-weight: 700; max-width: 100%; flex-wrap: wrap;
+    }
+    .id-card-mark {
+      align-self: flex-start; flex: 0 0 auto; text-align: center;
+      color: #173d67; font-size: 26px; line-height: .9; font-weight: 900;
+      border: 2px solid #9db5ce; border-radius: 50%; width: 48px; height: 48px;
+      display: grid; place-content: center; transform: rotate(8deg);
+    }
+    .id-card-mark small { font-size: 6px; letter-spacing: 1px; }
+    .id-card-details {
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,.66); border: 1px solid #c5d5e5;
+      border-radius: 6px; padding: 9px 12px; gap: 7px 12px;
+      margin-bottom: 10px;
+    }
+    .id-detail-item { padding: 3px 2px; min-width: 0; }
+    .id-detail-item label {
+      color: #627d99; font-size: 7px; letter-spacing: .8px; font-weight: 800;
+    }
+    .id-detail-item val {
+      color: #173d67; font-size: clamp(9px, 1.8vw, 12px);
+      margin-top: 2px; overflow-wrap: anywhere;
+    }
+    .id-detail-item val.blue { color: #174f89; }
+    .id-detail-item val.green { color: #08784e; }
+    #displayCode { color: #174f89 !important; }
+    .id-card-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid #b7c9dc; padding-top: 7px;
+    }
+    .id-barcode { color: #24496f; font-size: clamp(7px, 1.4vw, 10px); }
+    .id-status-badge {
+      color: #08784e; background: #e0f4eb; border: 1px solid #a9dbc4;
+      border-radius: 3px; padding: 4px 7px; font-size: 7px; font-weight: 900;
+    }
+    @media (max-width: 480px) {
+      .id-card-container { padding: 13px 12px; border-radius: 12px; }
+      .id-card-header { padding-bottom: 7px; margin-bottom: 10px; }
+      .id-card-details { padding: 6px 8px; gap: 4px 7px; margin-bottom: 6px; }
+      .id-card-footer { padding-top: 5px; }
+      .id-card-mark { width: 35px; height: 35px; font-size: 19px; }
+      .id-card-mark small { font-size: 5px; }
+    }
+</style>
 </head>
 <body>
 
@@ -701,8 +1278,8 @@
           <div class="brand-sub">VERIFICATION SYSTEM</div>
         </div>
       </div>
-      <h2>Welcome Back!</h2>
-      <p class="desc">Silakan masuk untuk mengakses sistem FAMILY VERIFICATION.</p>
+      <h2>Selamat Datang!</h2>
+      <p class="desc">Silakan pilih akses dan masuk ke sistem FAMILY VERIFICATION.</p>
       
       <div class="tabs">
         <button class="tab active" id="adminTab">Admin</button>
@@ -711,17 +1288,17 @@
 
       <!-- Login Form: Admin -->
       <div id="adminLogin">
-        <label for="accessCode">KODE AKSES</label>
-        <input id="accessCode" placeholder="Masukkan kode admin">
+        <label for="accessCode">KODE AKSES ADMIN</label>
+        <input id="accessCode" placeholder="Masukkan kode akses...">
         <button class="btn btn-full" id="adminLoginBtn">Masuk sebagai Admin →</button>
       </div>
 
       <!-- Login Form: Owner -->
       <div id="ownerLogin" class="hidden">
         <label for="ownerEmail">EMAIL OWNER</label>
-        <input id="ownerEmail" type="email" placeholder="Email Gmail">
+        <input id="ownerEmail" type="email" placeholder="Email Gmail Anda">
         <label for="ownerPassword">PASSWORD</label>
-        <input id="ownerPassword" type="password" placeholder="Password akun">
+        <input id="ownerPassword" type="password" placeholder="Password Akun">
         <button class="btn btn-full" id="ownerLoginBtn">Login Owner →</button>
       </div>
       
@@ -762,7 +1339,7 @@
       <header class="topbar">
         <div>
           <h2 id="pageTitle">Dashboard</h2>
-          <p>FAMILY VERIFICATION / Owner Panel</p>
+          <p>FAMILY VERIFICATION / Owner Control Panel</p>
         </div>
         <span class="pill">● ONLINE</span>
       </header>
@@ -771,8 +1348,8 @@
       <section class="page active" id="page-dashboard">
         <div class="welcome">
           <span class="welcome-tag">✦ OWNER CONTROL PANEL</span>
-          <h1>Welcome back, Alfin!</h1>
-          <p>Kelola anggota admin dan kode akses komunitas FAMILY dengan mudah.</p>
+          <h1>Halo, Alfin! 👋</h1>
+          <p>Kelola seluruh anggota admin dan kode akses komunitas FAMILY dengan instan dan aman.</p>
         </div>
         
         <div class="stats">
@@ -796,9 +1373,9 @@
         <div class="section-head">
           <div>
             <h3>Admin Terbaru</h3>
-            <p>Daftar admin yang telah terdaftar.</p>
+            <p>Daftar admin terdaftar baru-baru ini.</p>
           </div>
-          <button class="btn btn-small" data-goto="admins">Lihat Semua</button>
+          <button class="btn btn-small btn-gray" data-goto="admins">Lihat Semua</button>
         </div>
         <div class="admin-grid" id="recentAdmins"></div>
       </section>
@@ -808,9 +1385,9 @@
         <div class="section-head">
           <div>
             <h3>Daftar Admin</h3>
-            <p>Kelola semua kode akses admin.</p>
+            <p>Kelola semua status dan hak akses admin.</p>
           </div>
-          <button class="btn btn-small" data-goto="create">+ Tambah</button>
+          <button class="btn btn-small" data-goto="create">+ Tambah Kode</button>
         </div>
         <div class="admin-grid" id="allAdmins"></div>
       </section>
@@ -818,8 +1395,8 @@
       <!-- Sub Page: Buat Kode -->
       <section class="page" id="page-create">
         <div class="panel">
-          <h3>✦ Buat Kode Admin</h3>
-          <p class="panel-desc">Buat kode akses untuk anggota yang diterima menjadi admin.</p>
+          <h3>✦ Buat Kode Admin Baru</h3>
+          <p class="panel-desc">Generate kode akses unik untuk anggota yang telah disetujui menjadi admin.</p>
           
           <form id="createForm">
             <div class="form-grid">
@@ -833,6 +1410,13 @@
               </div>
             </div>
             
+            <label for="adminPhotoUrl">URL FOTO ADMIN (OPSIONAL)</label>
+            <input id="adminPhotoUrl" type="url" placeholder="https://contoh.com/foto-admin.jpg">
+            <div class="photo-preview-wrap">
+              <img id="adminPhotoPreview" class="photo-preview" alt="Preview foto admin">
+              <span>Tempel tautan langsung ke gambar (JPG, PNG, atau WEBP). Upload foto ke layanan hosting gambar terlebih dahulu.</span>
+            </div>
+
             <label for="adminRole">JABATAN / ROLE</label>
             <select id="adminRole" required>
               <option value="FOUNDER">FOUNDER</option>
@@ -850,40 +1434,41 @@
         </div>
 
         <div class="panel">
-          <h3>Informasi</h3>
-          <p class="panel-desc">Kode akses tetap berlaku sampai Owner menghapusnya secara manual. Berikan kode hanya kepada admin yang bersangkutan.</p>
+          <h3>Informasi PENTING</h3>
+          <p class="panel-desc">Kode akses akan terus aktif sampai Anda menghapusnya secara manual. Bagikan kode hanya kepada pihak yang berwenang.</p>
         </div>
       </section>
 
       <!-- Sub Page: Pengaturan -->
       <section class="page" id="page-settings">
         <div class="panel">
-          <h3>⚙ Informasi Owner</h3>
-          <p class="panel-desc">Informasi akun pengelola sistem.</p>
+          <h3>⚙ Profil Owner</h3>
+          <p class="panel-desc">Detail identitas pengelola utama sistem.</p>
           <label>NAMA OWNER</label>
           <input value="ALFIN" readonly>
-          <label>ROLE</label>
-          <input value="OWNER" readonly>
+          <label>ROLE HAK AKSES</label>
+          <input value="SUPER OWNER" readonly>
           <label>PROJECT</label>
-          <input value="FAMILY VERIFICATION" readonly>
+          <input value="FAMILY VERIFICATION SYSTEM" readonly>
         </div>
 
         <div class="panel">
           <h3>Informasi Sistem</h3>
           <p class="panel-desc">
-            Database: Firebase Firestore<br>
-            Authentication: Firebase Email/Password<br>
-            Website: GitHub Pages<br>
-            Version: 2.1
+            <strong>Database:</strong> Firebase Firestore<br>
+            <strong>Autentikasi:</strong> Firebase Auth System<br>
+            <strong>Fitur HP:</strong> Dukungan Navigasi Tombol Back Handphone<br>
+            <strong>Unduh ID Card:</strong> html2canvas Engine Supported<br>
+            <strong>Versi Aplikasi:</strong> 4.0 Premium VIP Card
           </p>
         </div>
 
-        <button class="btn btn-red" id="settingsLogoutBtn">Logout Akun Owner</button>
+        <button class="btn btn-red btn-full" id="settingsLogoutBtn">Logout Akun Owner</button>
       </section>
     </main>
   </div>
 
-  <!-- PAGE: ADMIN APP -->
+  <!-- PAGE: ADMIN APP (EXCLUSIVITY REDESIGN) -->
   <div id="adminApp" class="app hidden">
     <aside class="sidebar">
       <div class="brand">
@@ -895,7 +1480,7 @@
       </div>
       <div class="nav-title">ADMIN MENU</div>
       <div class="nav-group">
-        <button class="nav-btn active"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-btn active"><span class="nav-icon">▦</span>Kartu ID Saya</button>
       </div>
       <div class="sidebar-bottom">
         <div class="profile-mini">
@@ -912,35 +1497,75 @@
     <main class="main">
       <header class="topbar">
         <div>
-          <h2>Admin Dashboard</h2>
-          <p>FAMILY VERIFICATION / Admin Panel</p>
+          <h2>Digital Pass Verification</h2>
+          <p>FAMILY VERIFICATION / Official Admin Card</p>
         </div>
-        <span class="pill">● ACTIVE</span>
+        <span class="pill">● ACTIVE VERIFIED</span>
       </header>
 
-      <div class="admin-hero">
-        <span class="welcome-tag">✦ VERIFIED ADMIN</span>
-        <div class="admin-avatar" id="adminAvatar">A</div>
-        <h1 id="displayName">ADMIN</h1>
-        <p id="displayGroup">FAMILY GROUP</p>
-      </div>
+      <!-- EXCLUSIVE DIGITAL ID CARD CONTAINER -->
+      <div class="id-card-wrapper">
+        <div class="id-card-container" id="adminCardToDownload">
+          <div class="id-card-header">
+            <div class="id-card-brand">
+              <div class="id-card-brand-icon">🛡️</div>
+              <div>
+                <div class="id-card-brand-title">FAMILY VERIFIED</div>
+                <div class="id-card-brand-sub">OFFICIAL ADMIN PASS</div>
+              </div>
+            </div>
+            <div class="id-chip"></div>
+          </div>
 
-      <div class="admin-detail-grid">
-        <div class="detail-box">
-          <p>JABATAN</p>
-          <strong id="displayRole">ADMIN</strong>
+          <div class="id-card-profile">
+            <div class="id-avatar-outer">
+              <div class="id-card-avatar" id="adminAvatar">A</div>
+              <div class="id-verified-seal" title="Terverifikasi Resmi">✓</div>
+            </div>
+            <div class="id-card-person">
+              <div class="id-card-overline">IDENTITAS PEMEGANG KARTU</div>
+              <h2 class="id-card-name" id="displayName">ALFIN</h2>
+              <div class="id-card-group-pill">
+                <span>UNIT / GRUP:</span> <span id="displayGroup">FRIENDS FAMILY</span>
+              </div>
+            </div>
+            <div class="id-card-mark">FV<br><small>ADMIN</small></div>
+          </div>
+
+          <div class="id-card-details">
+            <div class="id-detail-item">
+              <label>JABATAN / ROLE</label>
+              <val id="displayRole" class="blue">FOUNDER</val>
+            </div>
+            <div class="id-detail-item">
+              <label>STATUS ADMIN</label>
+              <val id="displayAdminStatus" class="green">AKTIF</val>
+            </div>
+            <div class="id-detail-item">
+              <label>NOMOR WHATSAPP</label>
+              <val id="displayPhone" class="blue">-</val>
+            </div>
+            <div class="id-detail-item">
+              <label>KODE VERIFIKASI</label>
+              <val id="displayCode" style="color:#a5b4fc;">FAMILY-XXXX</val>
+            </div>
+            <div class="id-detail-item">
+              <label>VERIFIKASI SISTEM</label>
+              <val class="blue">OFFICIAL</val>
+            </div>
+          </div>
+
+          <div class="id-card-footer">
+            <div class="id-barcode" id="displayBarcode">||| | |||| ||| ||| |</div>
+            <div class="id-status-badge">● TERVERIFIKASI</div>
+          </div>
         </div>
-        <div class="detail-box">
-          <p>STATUS</p>
-          <strong class="green">AKTIF</strong>
-        </div>
-        <div class="detail-box">
-          <p>GROUP</p>
-          <strong id="displayGroup2">-</strong>
-        </div>
-        <div class="detail-box">
-          <p>VERIFICATION</p>
-          <strong class="blue">TERVERIFIKASI</strong>
+
+        <!-- DOWNLOAD BUTTON -->
+        <div class="id-card-actions">
+          <button class="btn btn-full btn-gold" id="downloadCardBtn">
+            📥 Unduh Kartu ID (PNG)
+          </button>
         </div>
       </div>
     </main>
@@ -962,10 +1587,11 @@
       getDoc, 
       getDocs, 
       setDoc, 
+      updateDoc,
       deleteDoc 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Configuration
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAWEFNt0c9I_w8ndXJ1Z9vn6ytm2NrULgo",
       authDomain: "family-verification-7a48f.firebaseapp.com",
@@ -979,13 +1605,113 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const OWNER_UID = "UEajx5CBJhVGIy7WWfkMoxpGswv2";
+    const DEFAULT_ADMIN_PHOTO = "https://c.termai.cc/i150/Fs3.jpg";
 
-    // Helper Selectors
     const $ = id => document.getElementById(id);
 
-    function showApp(id) {
+    // Preview foto dari URL hosting gambar
+    $("adminPhotoUrl").addEventListener("input", () => {
+      const url = $("adminPhotoUrl").value.trim();
+      const preview = $("adminPhotoPreview");
+      if (!url) {
+        preview.removeAttribute("src");
+        preview.style.display = "none";
+        return;
+      }
+      try {
+        const parsed = new URL(url);
+        if (parsed.protocol !== "https:") throw new Error("URL harus HTTPS");
+        preview.src = url;
+        preview.style.display = "block";
+        preview.onerror = () => {
+          preview.removeAttribute("src");
+          preview.style.display = "none";
+        };
+      } catch {
+        preview.removeAttribute("src");
+        preview.style.display = "none";
+      }
+    });
+
+    // Global App State & View Switching
+    let currentAppView = "loginPage";
+    let currentOwnerTab = "dashboard";
+    let currentAdminData = null;
+
+    // Otomatis kunci sesi setelah 5 menit tanpa aktivitas
+    const IDLE_TIMEOUT_MS = 5 * 60 * 1000;
+    let idleTimer = null;
+
+    function clearIdleTimer() {
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = null;
+    }
+
+    function startIdleTimer() {
+      clearIdleTimer();
+      if (!["ownerApp", "adminApp"].includes(currentAppView)) return;
+      idleTimer = setTimeout(async () => {
+        if (currentAppView === "ownerApp") {
+          await signOut(auth);
+        } else if (currentAppView === "adminApp") {
+          currentAdminData = null;
+          $("accessCode").value = "";
+          showApp("loginPage");
+          setMessage("Sesi berakhir karena tidak ada aktivitas selama 5 menit. Silakan masukkan ulang kode akses.");
+        }
+      }, IDLE_TIMEOUT_MS);
+    }
+
+    function resetIdleTimer() {
+      window.__fvLastActivity = Date.now();
+      if (["ownerApp", "adminApp"].includes(currentAppView)) startIdleTimer();
+    }
+
+    ["click", "keydown", "mousemove", "mousedown", "touchstart", "scroll"].forEach(eventName => {
+      document.addEventListener(eventName, resetIdleTimer, { passive: true });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        // Jika tab ditinggalkan lebih dari 5 menit, kunci sesi.
+        if (["ownerApp", "adminApp"].includes(currentAppView) &&
+            window.__fvLastActivity &&
+            Date.now() - window.__fvLastActivity >= IDLE_TIMEOUT_MS) {
+          lockInactiveSession();
+        } else {
+          resetIdleTimer();
+        }
+      } else {
+        window.__fvLastActivity = Date.now();
+      }
+    });
+
+    async function lockInactiveSession() {
+      clearIdleTimer();
+      if (currentAppView === "ownerApp") {
+        await signOut(auth);
+      } else if (currentAppView === "adminApp") {
+        currentAdminData = null;
+        $("accessCode").value = "";
+        showApp("loginPage");
+        setMessage("Sesi berakhir karena tidak ada aktivitas selama 5 menit. Silakan masukkan ulang kode akses.");
+      }
+    }
+
+    function showApp(id, isBack = false) {
       ["loginPage", "ownerApp", "adminApp"].forEach(x => $(x).classList.add("hidden"));
       $(id).classList.remove("hidden");
+      currentAppView = id;
+      if (["ownerApp", "adminApp"].includes(id)) {
+        window.__fvLastActivity = Date.now();
+        startIdleTimer();
+      } else {
+        clearIdleTimer();
+      }
+
+      if (!isBack) {
+        history.pushState({ appView: id, ownerTab: currentOwnerTab }, "", "");
+      }
     }
 
     function setMessage(msg, color = "#f87171") {
@@ -1024,7 +1750,7 @@
         const r = await signInWithEmailAndPassword(auth, email, password);
         if (r.user.uid !== OWNER_UID) {
           await signOut(auth);
-          setMessage("Akun ini bukan Owner!");
+          setMessage("Akun ini bukan milik Owner!");
         }
       } catch (e) {
         setMessage("Login gagal: " + e.message);
@@ -1042,6 +1768,7 @@
       const d = s.data();
       if (d.active !== true) throw Error("Kode akses sudah dinonaktifkan!");
 
+      d.code = code;
       return d;
     }
 
@@ -1053,8 +1780,8 @@
       $("adminLoginBtn").textContent = "Memverifikasi...";
 
       try {
-        showAdmin(await verifyAdmin(code));
-        localStorage.setItem("adminAccessCode", code);
+        const adminData = await verifyAdmin(code);
+        showAdmin(adminData);
       } catch (e) {
         setMessage(e.message);
       } finally {
@@ -1063,22 +1790,66 @@
       }
     };
 
-    function showAdmin(d) {
+    function showAdmin(d, isBack = false) {
+      currentAdminData = d;
       $("displayName").textContent = d.adminName || "ADMIN";
       $("displayGroup").textContent = d.groupName || "-";
-      $("displayGroup2").textContent = d.groupName || "-";
       $("displayRole").textContent = d.role || "ADMIN";
+      $("displayPhone").textContent = d.phone || "-";
+      $("displayAdminStatus").textContent = d.active === false ? "NONAKTIF" : "AKTIF";
+      $("displayAdminStatus").className = d.active === false ? "" : "green";
+      $("displayCode").textContent = d.code || "FAMILY-ADMIN";
+      
+      // Random style decorative barcode generator text
+      $("displayBarcode").textContent = "||| " + (d.code || "FAMILY").replace(/-/g, " | ") + " |||";
 
       const initial = (d.adminName || "A").charAt(0).toUpperCase();
-      $("adminAvatar").textContent = initial;
+      const avatar = $("adminAvatar");
+      avatar.replaceChildren();
+      const photo = document.createElement("img");
+      photo.src = d.photoUrl || DEFAULT_ADMIN_PHOTO;
+      photo.alt = "Foto " + (d.adminName || "admin");
+      photo.crossOrigin = "anonymous";
+      avatar.append(photo);
       $("miniAvatar").textContent = initial;
       $("miniName").textContent = d.adminName || "ADMIN";
 
-      showApp("adminApp");
+      showApp("adminApp", isBack);
     }
 
-    // Navigation Logic
-    function navigate(p) {
+    // Download Admin Card as PNG
+    $("downloadCardBtn").onclick = async () => {
+      const cardElement = $("adminCardToDownload");
+      const downloadBtn = $("downloadCardBtn");
+
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "⏳ Memproses Gambar...";
+
+      try {
+        const canvas = await html2canvas(cardElement, {
+          scale: 3, // Menggunakan resolusi tinggi
+          useCORS: true,
+          backgroundColor: null,
+          logging: false
+        });
+
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        const fileName = `KARTU-ADMIN-${(currentAdminData?.adminName || "ID").toUpperCase()}.png`;
+
+        link.download = fileName;
+        link.href = image;
+        link.click();
+      } catch (err) {
+        alert("Gagal mengunduh kartu ID: " + err.message);
+      } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = "📥 Unduh Kartu ID (PNG)";
+      }
+    };
+
+    // Navigation & Sub-Page Logic
+    function navigate(p, isBack = false) {
       document.querySelectorAll("#ownerApp .page").forEach(x => x.classList.remove("active"));
       $("page-" + p)?.classList.add("active");
 
@@ -1093,6 +1864,12 @@
         settings: "Pengaturan"
       }[p] || "Dashboard";
 
+      currentOwnerTab = p;
+
+      if (!isBack) {
+        history.pushState({ appView: "ownerApp", ownerTab: p }, "", "");
+      }
+
       if (p === "admins" || p === "dashboard") loadCodes();
       window.scrollTo(0, 0);
     }
@@ -1105,7 +1882,24 @@
       x.onclick = () => navigate(x.dataset.goto);
     });
 
-    // UI Component Builders
+    // Handle Hardware/Browser Back Button Navigation
+    window.onpopstate = (event) => {
+      if (event.state) {
+        const state = event.state;
+        if (state.appView === "ownerApp") {
+          showApp("ownerApp", true);
+          if (state.ownerTab) navigate(state.ownerTab, true);
+        } else if (state.appView === "adminApp") {
+          showApp("adminApp", true);
+        } else {
+          showApp("loginPage", true);
+        }
+      } else {
+        showApp("loginPage", true);
+      }
+    };
+
+    // UI Admin Card Component Builder
     function createAdminCard(item) {
       const d = item.data;
       const active = d.active === true;
@@ -1118,7 +1912,10 @@
 
       const av = document.createElement("div");
       av.className = "admin-avatar";
-      av.textContent = (d.adminName || "A").charAt(0).toUpperCase();
+      const photo = document.createElement("img");
+      photo.src = d.photoUrl || DEFAULT_ADMIN_PHOTO;
+      photo.alt = "Foto " + (d.adminName || "admin");
+      av.append(photo);
 
       const st = document.createElement("span");
       st.className = "pill" + (active ? "" : " off");
@@ -1131,20 +1928,34 @@
 
       const g = document.createElement("p");
       g.className = "group";
-      g.textContent = d.groupName || "-";
+      g.innerHTML = "👥 " + (d.groupName || "-");
 
       const info = document.createElement("div");
       info.className = "admin-info";
 
-      const code = document.createElement("p");
-      const b = document.createElement("strong");
-      const cv = document.createElement("span");
-      b.textContent = "Kode: ";
-      cv.textContent = item.id;
-      code.append(b, cv);
+      const codeP = document.createElement("p");
+      const codeLabel = document.createElement("span");
+      codeLabel.textContent = "Kode Akses:";
+      const codeValue = document.createElement("span");
+      codeValue.className = "code-badge";
+      codeValue.textContent = item.id;
+      codeP.append(codeLabel, codeValue);
 
-      const role = document.createElement("p");
-      role.textContent = "Jabatan: " + (d.role || "ADMIN");
+      const roleP = document.createElement("p");
+      const roleLabel = document.createElement("span");
+      roleLabel.textContent = "Jabatan:";
+      const roleValue = document.createElement("strong");
+      roleValue.textContent = d.role || "ADMIN";
+      roleP.append(roleLabel, roleValue);
+
+      const phoneP = document.createElement("p");
+      const phoneLabel = document.createElement("span");
+      phoneLabel.textContent = "WhatsApp:";
+      const phoneValue = document.createElement("strong");
+      phoneValue.textContent = d.phone || "-";
+      phoneP.append(phoneLabel, phoneValue);
+
+      info.append(codeP, roleP, phoneP);
 
       const acts = document.createElement("div");
       acts.className = "card-actions";
@@ -1158,6 +1969,57 @@
           alert("Kode berhasil disalin!");
         } catch {
           alert("Salin manual: " + item.id);
+        }
+      };
+
+      const edit = document.createElement("button");
+      edit.className = "btn btn-gray btn-small";
+      edit.textContent = "Edit Data";
+      edit.onclick = async () => {
+        const adminName = prompt("Nama admin:", d.adminName || "");
+        if (adminName === null) return;
+        const groupName = prompt("Nama grup:", d.groupName || "");
+        if (groupName === null) return;
+        const role = prompt("Jabatan / role:", d.role || "ADMIN");
+        if (role === null) return;
+        const phone = prompt("Nomor WhatsApp (format 628xxxx):", d.phone || "");
+        if (phone === null) return;
+        const photoUrl = prompt("URL foto admin (kosongkan untuk foto default):", d.photoUrl || "");
+        if (photoUrl === null) return;
+        const statusInput = prompt("Status admin: AKTIF atau NONAKTIF", active ? "AKTIF" : "NONAKTIF");
+        if (statusInput === null) return;
+
+        if (!adminName.trim() || !groupName.trim() || !role.trim()) {
+          alert("Nama admin, nama grup, dan jabatan wajib diisi.");
+          return;
+        }
+        if (photoUrl.trim()) {
+          try {
+            const parsed = new URL(photoUrl.trim());
+            if (parsed.protocol !== "https:") throw new Error();
+          } catch {
+            alert("URL foto harus berupa tautan HTTPS yang valid.");
+            return;
+          }
+        }
+        const normalizedStatus = statusInput.trim().toUpperCase();
+        if (!["AKTIF", "NONAKTIF"].includes(normalizedStatus)) {
+          alert("Status harus AKTIF atau NONAKTIF.");
+          return;
+        }
+        try {
+          await updateDoc(doc(db, "adminCodes", item.id), {
+            adminName: adminName.trim(),
+            groupName: groupName.trim(),
+            role: role.trim(),
+            phone: phone.trim(),
+            photoUrl: photoUrl.trim(),
+            active: normalizedStatus === "AKTIF"
+          });
+          alert("Data admin berhasil diperbarui.");
+          await loadCodes();
+        } catch (e) {
+          alert("Gagal mengedit data: " + e.message);
         }
       };
 
@@ -1175,14 +2037,13 @@
         }
       };
 
-      acts.append(cp, del);
-      info.append(code, role, acts);
-      c.append(top, n, g, info);
+      acts.append(cp, edit, del);
+      c.append(top, n, g, info, acts);
 
       return c;
     }
 
-    // Data Loaders
+    // Load Data from Firestore
     async function loadCodes() {
       $("allAdmins").textContent = "Memuat data...";
       $("recentAdmins").textContent = "";
@@ -1214,12 +2075,22 @@
       }
     }
 
-    // Code Creation Form Handler
+    // Code Generator Form Handler
     $("createForm").onsubmit = async (e) => {
       e.preventDefault();
       const adminName = $("adminName").value.trim();
       const groupName = $("groupName").value.trim();
       const role = $("adminRole").value;
+      const phone = $("adminPhone").value.trim();
+      const photoUrl = $("adminPhotoUrl").value.trim();
+      if (photoUrl) {
+        try {
+          const parsedPhotoUrl = new URL(photoUrl);
+          if (parsedPhotoUrl.protocol !== "https:") throw new Error();
+        } catch {
+          return alert("URL foto harus berupa tautan HTTPS yang valid.");
+        }
+      }
 
       if (!adminName || !groupName) return alert("Lengkapi semua data!");
 
@@ -1240,6 +2111,8 @@
           adminName,
           groupName,
           role,
+          phone,
+          photoUrl,
           active: true,
           createdAt: Date.now()
         });
@@ -1249,7 +2122,7 @@
         box.className = "result-code";
 
         const h = document.createElement("p");
-        h.textContent = "✓ KODE BERHASIL DIBUAT";
+        h.textContent = "✓ KODE AKSES BERHASIL DIBUAT";
 
         const v = document.createElement("h3");
         v.textContent = code;
@@ -1270,6 +2143,8 @@
         $("newCodeResult").append(box);
 
         $("createForm").reset();
+        $("adminPhotoPreview").removeAttribute("src");
+        $("adminPhotoPreview").style.display = "none";
         await loadCodes();
       } catch (e) {
         alert("Gagal membuat kode: " + e.message);
@@ -1279,7 +2154,7 @@
       }
     };
 
-    // Session Management & Logout
+    // Logout Operations
     async function logoutOwner() {
       await signOut(auth);
     }
@@ -1292,7 +2167,7 @@
       $("accessCode").value = "";
     };
 
-    // Firebase Auth State Observer
+    // Firebase Auth Observer
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         if (user.uid === OWNER_UID) {
@@ -1305,17 +2180,9 @@
         return;
       }
 
-      const code = localStorage.getItem("adminAccessCode");
-      if (code) {
-        try {
-          showAdmin(await verifyAdmin(code));
-        } catch {
-          localStorage.removeItem("adminAccessCode");
-          showApp("loginPage");
-        }
-      } else {
-        showApp("loginPage");
-      }
+      // Kode akses admin tidak disimpan di browser; admin wajib memasukkannya kembali.
+      localStorage.removeItem("adminAccessCode");
+      showApp("loginPage");
     });
   </script>
 </body>
