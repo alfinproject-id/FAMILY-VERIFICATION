@@ -1349,6 +1349,22 @@
       .id-card-details { margin-bottom: 18px !important; }
     }
 
+
+    /* Pencarian dan aksi status pada panel owner */
+    .admin-search-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 18px;
+      max-width: 620px;
+    }
+    .admin-search-wrap input { margin-top: 0; flex: 1; min-width: 0; }
+    .btn-status { white-space: nowrap; }
+    @media (max-width: 480px) {
+      .admin-search-wrap { flex-direction: column; align-items: stretch; }
+      .admin-search-wrap .btn { width: 100%; }
+    }
+
   </style>
 </head>
 <body>
@@ -1473,6 +1489,10 @@
             <p>Kelola semua status dan hak akses admin.</p>
           </div>
           <button class="btn btn-small" data-goto="create">+ Tambah Kode</button>
+        </div>
+        <div class="admin-search-wrap">
+          <input id="adminSearchInput" type="search" placeholder="Cari nama, grup, nomor WhatsApp, jabatan, atau kode..." autocomplete="off">
+          <button class="btn btn-gray btn-small" id="clearAdminSearch" type="button">Reset</button>
         </div>
         <div class="admin-grid" id="allAdmins"></div>
       </section>
@@ -1731,6 +1751,7 @@
     let currentAppView = "loginPage";
     let currentOwnerTab = "dashboard";
     let currentAdminData = null;
+    let allAdminItems = [];
 
     // Otomatis kunci sesi setelah 5 menit tanpa aktivitas
     const IDLE_TIMEOUT_MS = 5 * 60 * 1000;
@@ -2154,6 +2175,26 @@
         }
       };
 
+      const toggleStatus = document.createElement("button");
+      toggleStatus.className = "btn btn-small btn-status " + (active ? "btn-red" : "btn-gold");
+      toggleStatus.textContent = active ? "Nonaktifkan" : "Aktifkan";
+      toggleStatus.onclick = async () => {
+        const nextStatus = !active;
+        const confirmation = nextStatus
+          ? `Aktifkan kembali admin ${d.adminName || item.id}?`
+          : `Nonaktifkan admin ${d.adminName || item.id}? Admin tidak akan bisa login selama status NONAKTIF.`;
+        if (!confirm(confirmation)) return;
+        toggleStatus.disabled = true;
+        try {
+          await updateDoc(doc(db, "adminCodes", item.id), { active: nextStatus });
+          alert(`Status admin berhasil diubah menjadi ${nextStatus ? "AKTIF" : "NONAKTIF"}.`);
+          await loadCodes();
+        } catch (e) {
+          alert("Gagal mengubah status: " + e.message);
+          toggleStatus.disabled = false;
+        }
+      };
+
       const del = document.createElement("button");
       del.className = "btn btn-red btn-small";
       del.textContent = "Hapus";
@@ -2168,11 +2209,39 @@
         }
       };
 
-      acts.append(cp, edit, del);
+      acts.append(cp, edit, toggleStatus, del);
       c.append(top, n, g, info, acts);
 
       return c;
     }
+
+    // Render daftar admin dengan pencarian khusus panel Owner
+    function renderAdminList() {
+      const container = $("allAdmins");
+      const query = ($("adminSearchInput")?.value || "").trim().toLocaleLowerCase("id");
+      const filtered = allAdminItems.filter(item => {
+        const d = item.data || {};
+        const searchable = [
+          item.id, d.adminName, d.groupName, d.phone, d.role,
+          d.active === true ? "aktif active" : "nonaktif inactive"
+        ].join(" ").toLocaleLowerCase("id");
+        return searchable.includes(query);
+      });
+
+      container.innerHTML = "";
+      if (!filtered.length) {
+        container.innerHTML = `<div class="empty">${query ? "Admin tidak ditemukan." : "Belum ada admin terdaftar."}</div>`;
+        return;
+      }
+      filtered.forEach(item => container.append(createAdminCard(item)));
+    }
+
+    $("adminSearchInput").addEventListener("input", renderAdminList);
+    $("clearAdminSearch").addEventListener("click", () => {
+      $("adminSearchInput").value = "";
+      renderAdminList();
+      $("adminSearchInput").focus();
+    });
 
     // Load Data from Firestore
     async function loadCodes() {
@@ -2182,6 +2251,7 @@
       try {
         const s = await getDocs(collection(db, "adminCodes"));
         const items = s.docs.map(x => ({ id: x.id, data: x.data() })).reverse();
+        allAdminItems = items;
         const total = items.length;
         const active = items.filter(x => x.data.active === true).length;
 
@@ -2198,7 +2268,7 @@
           return;
         }
 
-        items.forEach(x => $("allAdmins").append(createAdminCard(x)));
+        renderAdminList();
         items.slice(0, 4).forEach(x => $("recentAdmins").append(createAdminCard(x)));
       } catch (e) {
         $("allAdmins").textContent = "Gagal memuat data: " + e.message;
